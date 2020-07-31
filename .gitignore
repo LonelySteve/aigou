@@ -31,3 +31,12 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### static files ###
+**/static/
+
+### temp files, logs ###
+**/t[e]mp/**
+**/log[s]/**
+!**/t[e]mp/.gitkeep
+!**/log[s]/.gitkeep
