@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/x-icon" href="/img/title-icon.jpg"/>
+		<title>爱购首页</title>
+		<link rel="stylesheet" type="text/css" href="/iconfont/iconfont.css">
+		<link rel="stylesheet" href="/css/reset.css" />
+		<link rel="stylesheet" href="/css/top.css" />
+		<link rel="stylesheet" href="/css/index.css" />
+		<link rel="stylesheet" href="/css/footer.css" />
+		<link rel="stylesheet" href="/css/font-awesome-4.7.0/Font-Awesome-master/css/font-awesome.min.css" />
+		<script type="text/javascript" src="/js/banner.js" ></script>
+	</head>
+	<body>
+		<!--头部-->
+		<div class="top" id="top">
+			<!--头部bar-->
+			<div class="top" th:id="top" >
+				<div class="top-bar">
+					<div class="w1230 top-bar-main">
+						<a href="/front/index" class="toIndex"> <i
+								class="fa fa-home"></i> <span>爱购网首页</span>
+						</a>
+						<ul>
+							<li><a href="/front/login/loginPage" class="login">登录</a></li>
+							<li><a href="/front/register/registerPage" class="register">注册</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<!--logo+搜索-->
+			<div class="top-header w1230 clear-float">
+				<a href="/front/index" class="logo">
+					<img src="/img/logo.png" width=""/>
+				</a>
+				<div class="top-header-right">
+					<!--搜索框-->
+					<div class="search clear-float">
+						<input type="text"  placeholder="牛奶" class="search-txt"/>
+						<a href="#" class="search-btn">搜索</a>
+					</div>
+					<!--热搜-->
+					<p class="hotkey">
+						<a th:each="searchHistory:${searchHistories }" href="javascript:;;" class="hotSearch" th:text="${searchHistory.searchWords }"></a>
+					</p>
+				</div>
+			</div>
+		</div>
+		<!--分类+banner-->
+		<div class="main w1230 clear-float">
+			<!--商品分类-->
+			<div class="classify">
+				<ul>
+						<li th:each="productType:${allProductTypes}">
+							<h3>
+
+								<a href="/front/productType/index?type=${productType.id}" th:text="${productType.productTypeName}">
+									<i th:class="'iconfont '+ ${productType.productTypeIcon }"></i>
+								</a>
+							</h3>
+						</li>
+				</ul>
+			</div>
+			<!--轮播-->
+			<div class="banner" id="main">
+				<ul id="pic">
+						<li th:each="carouselFigure:${allCarouselFigures}">
+							<a href="#"><img th:src="@{|/upload/eshop/${carouselFigure.url}|}" alt="" width="1020px" height="480px"/></a>
+						</li>
+				</ul>
+				<ul class="banner-btn" id="list">
+							<li class="on" th:each="carouselFigure,n:${allCarouselFigures}" th:if="${n.index==0 }"></li>
+							<li  th:each="carouselFigure,n:${allCarouselFigures}" th:if="${n.index!=0 }"></li>
+				</ul>
+			</div>
+		</div>
+		<!--新品+排行榜-->
+		<div class="new-rank w1230 clear-float">
+			<a href="#" class="new-img"><img src="/img/new.jpg" width="267px" height="400px"/></a>
+			<!--新品-->
+			<div class="new">
+				<h3 class="title">新品</h3>
+				<div class="new-list">
+					<ul>
+							<li th:each="newProduct:${newProducts}">
+								<a href="/front/product_detail/productDetail?id=${newProduct.id}">
+									<img th:src="@{|/upload/eshop/${newProduct.productImage}|}" alt="" width="90px" height="90px"/>
+									<p th:text="${newProduct.productName }"></p>
+								</a>
+							</li>
+					</ul>
+				</div>
+			</div>
+			<!--排行榜-->
+			<div class="rank">
+				<h3 class="title">排行榜</h3>
+				<div class="rank-list">
+					<ul>
+							<li th:each="ranking,step:${rankings }">
+								<a href="/front/product_detail/productDetail?id=${ranking.id}">
+									<span class="rank-icon${step.count}" th:text="${step.count }"></span>
+									<img th:src="@{|/upload/eshop/${ranking.productImage}|}" alt="" width="90px" height="90px"/>
+									<p th:text="${ranking.productName }"></p>
+								</a>
+							</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!--侧导航栏-->	
+		<div class="c-nav">
+			<ul>
+				<li><a href="#global-foot" class="nav-g">全球进口</a></li>
+				<li><a href="#cloth" class="nav-c">服装服饰</a></li>
+				<li><a href="#mod" class="nav-m">护肤美妆</a></li>
+				<li><a href="#book" class="nav-b">图书学习</a></li>
+				<li><a href="#top" class="nav-top">返回顶部</a></li>
+			</ul>
+		</div>
+		<!--全球进口-->
+		<div class="global-foot w1230" id="global-foot">
+			<h3 class="h-title">全球进口</h3>
+			<div class="global-list">
+				<ul class="clear-float">
+						<li th:each="p1:${list1}">
+							<a href="/front/product_detail/productDetail?id=${p1.id}">
+							<p th:text="${p1.productName }"></p>
+							<img th:src="@{|/upload/eshop/${p1.productImage}|}" alt="" width="150px" height="150px"/></a>
+						</li>
+				</ul>
+			</div>
+		</div>
+		<!--服装服饰-->
+		<div class="cloth w1230" id="cloth">
+			<h3 class="h-title">服装服饰</h3>
+			<div class="cloth-list">
+				<ul class="clear-float" >
+						<li th:each="p2:${list2}">
+							<a href="/front/product_detail/productDetail?id=${p2.id}">
+							<div class="c-img"><img th:src="@{|/upload/eshop/${p2.productImage}|}" alt="" width="180px" height="180px"/></div>
+							<p class="c-title" th:text="${p2.productName}"></p>
+							<span class="c-price" th:text="'￥'+${p2.price }"></span>
+						</a></li>
+				</ul>
+			</div>
+		</div>
+		<!--护肤美妆-->
+		<div class="mod w1230" id="mod">
+			<h3 class="h-title">护肤美妆</h3>
+			<div class="mod-list">
+				<ul class="clear-float">
+						<li th:each="p3:${list3}">
+							<a href="/front/product_detail/productDetail?id=${p3.id}">
+							<img th:src="@{|/upload/eshop/${p3.productImage}|}" alt="" width="100px" height="100px"/>
+							<div class="mod-info">
+								<p class="m-title" th:text="${p3.productName}"></p>
+								<span class="m-price" th:text="'￥'+${p3.price }"></span>
+							</div>
+						</a></li>
+				</ul>
+			</div>
+		</div>
+		<!--图书学习-->
+		<div class="book w1230" id="book">
+			<h3 class="h-title">图书学习</h3>
+			<div class="book-list">
+				<ul class="clear-float">
+						<li th:each="p4:${list4}">
+							<a href="/front/product_detail/productDetail?id=${p4.id}">
+							<img th:src="@{|/upload/eshop/${p4.productImage}|}" alt="" width="180px" height="180px"/>
+							<p class="c-title" th:text="${p4.productName}"></p>
+							<span class="c-price" th:text="'￥'+${p4.price }"></span>
+						</a></li>
+				</ul>
+			</div>
+		</div>
+		<!--脚注-->
+		<div class="footer">
+			<p class="w1230">
+				<a href="#">关于爱购</a>
+				<a href="#">合作伙伴</a>
+				<a href="#">营销中心</a>
+				<a href="#">廉正举报</a>
+				<a href="#">联系客服</a>
+				<a href="#">开发平台</a>
+				<a href="#">诚征英才</a>
+				<a href="#">联系我们</a>
+				<a href="#">网站地图</a>
+				<a href="#">知识产权</a><span>|</span>
+				<span>&copy;2018-2020 igo.com 版权所有</span>
+			</p>
+		</div>
+		<!-- 隐藏内容 -->
+		<input type="hidden" name="type" id="ptype" value="">
+		<script src="/plugs/jquery.js"></script>
+		<script type="text/javascript">
+			$(function (){
+				$('.search-btn').on('click', function(){
+					var words = $('.search-txt').val();
+					window.location.href = "/front/productType/index?type="+ $('#ptype').val() +"&words=" + words;
+				})
+				
+				$('.hotSearch').on('click', function (){
+					$('.search-txt').val($(this).text());
+					$('.search-btn').click();
+				})
+				
+				$('.search-txt').on('keyup', function(event){
+					if(event.keyCode ==13){
+						$('.search-btn').click();
+				  	}
+				})
+			})
+		</script>
+	</body>
+</html>

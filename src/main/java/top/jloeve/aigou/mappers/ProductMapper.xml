@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="top.jloeve.aigou.mappers.ProductMapper">
+    <resultMap id="ProductTypeResult" type="ProductType">
+        <id property="id" column="product_type_id"/>
+        <result column="product_type_name" property="productTypeName"/>
+        <result column="product_type_desc" property="productTypeDesc"/>
+        <result column="product_type_icon" property="productTypeIcon"/>
+    </resultMap>
+    <resultMap id="ProductBrandResult" type="Brand">
+        <id property="id" column="product_brand_id"/>
+        <result column="product_brand_name" property="brandName"/>
+        <result column="product_brand_type" property="brandType"/>
+        <result column="product_brand_img" property="brandImg"/>
+    </resultMap>
+    <resultMap id="ProductResult" type="Product">
+        <id column="product_id" property="id"/>
+        <result column="product_name" property="productName"/>
+        <result column="product_image" property="productImage"/>
+        <result column="product_price" property="price"/>
+        <result column="product_desc" property="productDesc"/>
+        <result column="create_time" property="createTime"/>
+        <association property="type" resultMap="ProductTypeResult"/>
+        <association property="brand" resultMap="ProductBrandResult"/>
+    </resultMap>
+    <select id="queryNewProducts" resultType="Product">
+        SELECT * FROM `s_product`
+        ORDER BY `create_time` DESC
+        <if test="limit != null">
+            LIMIT #{limit}
+        </if>
+    </select>
+    <select id="queryByProductTypeName" resultType="Product" resultMap="ProductResult">
+        SELECT
+        p.id as product_id,
+        p.product_name as product_name,
+        p.product_desc as product_desc,
+        p.create_time as create_time,
+        p.price as product_price,
+        p.product_image as product_image,
+        t.id as product_type_id,
+        t.product_type_name as product_type_name,
+        t.product_type_desc as product_type_desc,
+        t.product_type_icon as product_type_icon,
+        p.product_brand as product_brand_id
+        FROM `s_product` AS p LEFT JOIN `s_product_type` AS t ON p.product_type = t.id
+        <if test="productTypeName != null">
+            WHERE `product_type_name` = #{productTypeName}
+        </if>
+        <if test="limit != null">
+            LIMIT #{limit}
+        </if>
+    </select>
+</mapper>

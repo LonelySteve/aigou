@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <settings>
+        <setting name="logImpl" value="STDOUT_LOGGING"/>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
+    <typeAliases>
+        <typeAlias type="top.jloeve.aigou.domains.impl.Brand" alias="Brand"/>
+        <typeAlias type="top.jloeve.aigou.domains.impl.Carousel" alias="Carousel"/>
+        <typeAlias type="top.jloeve.aigou.domains.impl.Product" alias="Product"/>
+        <typeAlias type="top.jloeve.aigou.domains.impl.ProductType" alias="ProductType"/>
+        <typeAlias type="top.jloeve.aigou.domains.impl.OrderProduct" alias="OrderProduct"/>
+        <typeAlias type="top.jloeve.aigou.domains.impl.SearchHistory" alias="SearchHistory"/>
+        <typeAlias type="top.jloeve.aigou.domains.impl.OrderProduct" alias="OrderProduct"/>
+        <typeAlias type="top.jloeve.aigou.domains.impl.Order" alias="Order"/>
+        <typeAlias type="top.jloeve.aigou.domains.impl.User" alias="User"/>
+    </typeAliases>
+</configuration>

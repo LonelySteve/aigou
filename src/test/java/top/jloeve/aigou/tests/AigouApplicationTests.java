@@ -1,4 +1,4 @@
-package top.jloeve.aigou;
+package top.jloeve.aigou.tests;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
