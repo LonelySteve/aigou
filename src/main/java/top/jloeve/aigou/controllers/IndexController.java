@@ -44,7 +44,7 @@ public class IndexController {
     }
 
     public void resolveSearchHistory() {
-      List<SearchHistory> recentSearchHistories = searchHistoryService.getRecentSearchHistories(6);
+      List<SearchHistory> recentSearchHistories = searchHistoryService.getRecentPopularSearchHistories(6);
       modelMap.addAttribute("searchHistories", recentSearchHistories);
     }
 
