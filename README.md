@@ -6,7 +6,7 @@
 
 ### 前台首页
 
-![前台首页效果](./images/index-front.png)
+![前台首页效果](./images/index-front.jpg)
 
 ## 配置
 
