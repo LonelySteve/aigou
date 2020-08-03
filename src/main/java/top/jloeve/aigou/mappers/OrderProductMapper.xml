@@ -21,19 +21,16 @@
         <association property="product" resultMap="top.jloeve.aigou.mappers.ProductMapper.ProductResult"/>
     </resultMap>
     <select id="queryBySales" resultType="OrderProduct" resultMap="OrderProductResult">
-        SELECT
-        op.id AS order_product_id,
-        order_id,
-        product_id,
-        product_num,
-        product_name,
+        SELECT *,
+        s_order_product.id AS order_product_id,
         product_brand AS product_brand_id,
-        product_desc,
-        product_image,
         product_type AS product_type_id,
         price AS product_price,
-        create_time
-        FROM `s_order_product` AS op LEFT JOIN `s_product` AS p ON op.product_id = p.id ORDER BY op.product_num DESC
+        SUM(`product_num`) AS product_sum
+        FROM aigou.s_order_product
+        LEFT JOIN `s_product` ON s_product.id = s_order_product.product_id
+        GROUP BY `product_id`
+        ORDER BY `product_sum` DESC
         <if test="limit != null">
             LIMIT #{limit}
         </if>
