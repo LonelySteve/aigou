@@ -10,7 +10,7 @@
     </parent>
     <groupId>top.jloeve</groupId>
     <artifactId>aigou</artifactId>
-    <version>0.0.3-SNAPSHOT</version>
+    <version>0.0.4-SNAPSHOT</version>
     <name>aigou</name>
     <description>Demo project for Spring Boot</description>
 
