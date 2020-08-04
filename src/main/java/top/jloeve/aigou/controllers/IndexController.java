@@ -20,75 +20,55 @@ import java.util.Map;
 @Controller
 @RequestMapping("")
 public class IndexController {
+
+  private final ISearchHistoryService searchHistoryService;
+
+  private final IProductService productService;
+
+  private final ICarouselService carouseService;
+
   @Autowired
-  private ISearchHistoryService searchHistoryService;
-  @Autowired
-  private IProductService productService;
-  @Autowired
-  private ICarouselService carouseService;
-
-  class ModelMapResolver {
-    private final ModelMap modelMap;
-
-    public ModelMapResolver(ModelMap modelMap) {
-      this.modelMap = modelMap;
-    }
-
-    public void resolve() {
-      resolveSearchHistory();
-      resolveProductType();
-      resolveCarouse();
-      resolveNewProducts();
-      resolveRanking();
-      resolvePartitions();
-    }
-
-    public void resolveSearchHistory() {
-      List<SearchHistory> recentSearchHistories = searchHistoryService.getRecentPopularSearchHistories(6);
-      modelMap.addAttribute("searchHistories", recentSearchHistories);
-    }
-
-    public void resolveProductType() {
-      List<ProductType> allProductTypes = productService.getAllProductTypes();
-      modelMap.addAttribute("allProductTypes", allProductTypes);
-    }
-
-    public void resolveCarouse() {
-      List<Carousel> carousels = carouseService.getCarousels(3);
-      modelMap.addAttribute("allCarouselFigures", carousels);
-    }
-
-    public void resolveNewProducts() {
-      List<Product> newProducts = productService.getNewProducts(6);
-      modelMap.addAttribute("newProducts", newProducts);
-    }
-
-    public void resolveRanking() {
-      List<Product> rankingProducts = productService.getRankingProducts(6);
-      modelMap.addAttribute("rankings", rankingProducts);
-    }
-
-    public void resolvePartitions() {
-      Map<String, Integer> partitionNameToCountMap = new HashMap<>();
-      partitionNameToCountMap.put("全球进口", 5);
-      partitionNameToCountMap.put("护肤美妆", 5);
-      partitionNameToCountMap.put("服装服饰", 12);
-      partitionNameToCountMap.put("图书学习", 12);
-
-      int counter = 1;
-      for (Map.Entry<String, Integer> entry : partitionNameToCountMap.entrySet()) {
-        List<Product> products =
-            productService.getByProductTypeName(entry.getKey(), entry.getValue());
-        modelMap.addAttribute("list" + counter, products);
-        counter++;
-      }
-    }
+  public IndexController(
+      ISearchHistoryService searchHistoryService,
+      IProductService productService,
+      ICarouselService carouseService) {
+    this.searchHistoryService = searchHistoryService;
+    this.productService = productService;
+    this.carouseService = carouseService;
   }
 
   @RequestMapping("")
   public String index(ModelMap modelMap) {
-    ModelMapResolver modelMapResolver = new ModelMapResolver(modelMap);
-    modelMapResolver.resolve();
+    List<SearchHistory> recentSearchHistories =
+        searchHistoryService.getRecentPopularSearchHistories(6);
+    modelMap.addAttribute("searchHistories", recentSearchHistories);
+
+    List<ProductType> allProductTypes = productService.getAllProductTypes();
+    modelMap.addAttribute("allProductTypes", allProductTypes);
+
+    List<Carousel> carousels = carouseService.getCarousels(3);
+    modelMap.addAttribute("allCarouselFigures", carousels);
+
+    List<Product> newProducts = productService.getNewProducts(6);
+    modelMap.addAttribute("newProducts", newProducts);
+
+    List<Product> rankingProducts = productService.getRankingProducts(6);
+    modelMap.addAttribute("rankings", rankingProducts);
+
+    Map<String, Integer> partitionNameToCountMap = new HashMap<>();
+    partitionNameToCountMap.put("全球进口", 5);
+    partitionNameToCountMap.put("护肤美妆", 5);
+    partitionNameToCountMap.put("服装服饰", 12);
+    partitionNameToCountMap.put("图书学习", 12);
+
+    int counter = 1;
+    for (Map.Entry<String, Integer> entry : partitionNameToCountMap.entrySet()) {
+      List<Product> products =
+          productService.getByProductTypeName(entry.getKey(), entry.getValue());
+      modelMap.addAttribute("list" + counter, products);
+      counter++;
+    }
+
     return "index/index";
   }
 }

@@ -8,4 +8,5 @@ import java.util.List;
 @Repository
 public interface ProductTypeMapper {
   List<ProductType> query();
+  ProductType queryById(String uuid);
 }

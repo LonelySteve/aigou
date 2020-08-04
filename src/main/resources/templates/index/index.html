@@ -11,7 +11,7 @@
             <!--/*@thymesVar id="allProductTypes" type="java.util.List<top.jloeve.aigou.domains.impl.ProductType>"*/-->
             <li th:each="productType:${allProductTypes}">
                 <h3>
-                    <a th:href="@{|/product-type/${productType.uuid}|}" th:text="${productType.name}">
+                    <a th:href="@{/product-type(uuid=${productType.uuid})}" th:text="${productType.name}">
                         <i th:class="'iconfont '+ ${productType.iconClassName}"></i>
                     </a>
                 </h3>

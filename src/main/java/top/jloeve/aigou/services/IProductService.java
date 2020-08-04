@@ -26,4 +26,6 @@ public interface IProductService extends IService {
   }
 
   List<Product> getByProductTypeName(String name, Integer limit);
+
+  List<Product> getByParams(String productTypeUUID, String brands, String keyword);
 }

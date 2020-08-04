@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import top.jloeve.aigou.domains.impl.Product;
 import top.jloeve.aigou.mappers.ProductMapper;
 
+import java.util.Arrays;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
@@ -17,6 +18,18 @@ import java.util.List;
 @Transactional
 public class TestProductMapper extends TestCase {
   @Autowired private ProductMapper productMapper;
+
+  public void assertProduct(Product product) {
+    assertNotNull(product.getUuid());
+    assertNotNull(product.getDesc());
+    assertNotNull(product.getImageFileName());
+    assertNotNull(product.getName());
+    assertNotNull(product.getType());
+    assertNotNull(product.getType().getUuid());
+    assertNotNull(product.getBrand());
+    assertNotNull(product.getBrand().getUuid());
+    assertNotNull(product.getCreateTime());
+  }
 
   @Test
   public void testQueryNewProducts() {
@@ -32,12 +45,7 @@ public class TestProductMapper extends TestCase {
     assertEquals(1, products.size());
 
     Product product = products.get(0);
-
-    assertNotNull(product.getUuid());
-    assertNotNull(product.getCreateTime());
-    assertNotNull(product.getPrice());
-    assertNotNull(product.getImageFileName());
-    assertNotNull(product.getName());
+    assertProduct(product);
   }
 
   @Test
@@ -54,14 +62,7 @@ public class TestProductMapper extends TestCase {
     assertEquals(1, products.size());
 
     Product product = products.get(0);
-    assertNotNull(product.getUuid());
-    assertNotNull(product.getName());
-    assertNotNull(product.getDesc());
-    assertNotNull(product.getPrice());
-    assertNotNull(product.getImageFileName());
-    assertNotNull(product.getCreateTime());
-    assertNotNull(product.getType());
-    assertNotNull(product.getBrand());
+    assertProduct(product);
   }
 
   @Test
@@ -75,14 +76,18 @@ public class TestProductMapper extends TestCase {
     assertEquals(1, products.size());
 
     Product product = products.get(0);
-    assertNotNull(product.getUuid());
-    assertNotNull(product.getDesc());
-    assertNotNull(product.getImageFileName());
-    assertNotNull(product.getName());
-    assertNotNull(product.getType());
-    assertNotNull(product.getType().getUuid());
-    assertNotNull(product.getBrand());
-    assertNotNull(product.getBrand().getUuid());
-    assertNotNull(product.getCreateTime());
+    assertProduct(product);
+  }
+
+  @Test
+  public void testQueryByParams() {
+    String[] brandUUIDs = {
+      "b8eaceed-7b72-44e8-bfab-cb46601399a8", "00760bcd-da11-4596-9338-d6fe39181e9c"
+    };
+    List<Product> products =
+        productMapper.queryByParams(
+            "0eba44a1-41d5-4156-b0f0-c16475c084ac", Arrays.asList(brandUUIDs), "子");
+    assertEquals(1, products.size());
+    assertProduct(products.get(0));
   }
 }

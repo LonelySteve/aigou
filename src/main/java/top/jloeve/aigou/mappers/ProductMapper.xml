@@ -10,10 +10,10 @@
         <result column="product_type_desc" property="desc"/>
         <result column="product_type_icon_class_name" property="iconClassName"/>
     </resultMap>
-    <resultMap id="ProductBrandResult" type="Brand">
+    <resultMap id="BrandResult" type="Brand">
         <id property="uuid" column="product_brand_uuid"/>
         <result column="product_brand_name" property="name"/>
-        <result column="product_brand_img" property="imageFileName"/>
+        <result column="product_brand_image_file_name" property="imageFileName"/>
         <association property="type" resultMap="ProductTypeResult"/>
     </resultMap>
     <resultMap id="ProductResult" type="Product">
@@ -24,28 +24,37 @@
         <result column="product_desc" property="desc"/>
         <result column="product_create_time" property="createTime"/>
         <association property="type" resultMap="ProductTypeResult"/>
-        <association property="brand" resultMap="ProductBrandResult"/>
+        <association property="brand" resultMap="BrandResult"/>
     </resultMap>
-    <select id="queryNewProducts" resultType="Product">
-        SELECT * FROM `s_product`
+    <select id="queryNewProducts" resultMap="ProductResult">
+        SELECT
+        BIN_TO_UUID(uuid) AS product_uuid,
+        `name` AS product_name,
+        `desc` AS product_desc,
+        create_time AS product_create_time,
+        price AS product_price,
+        image_file_name AS product_image_file_name,
+        BIN_TO_UUID(type_uuid) AS product_type_uuid,
+        BIN_TO_UUID(brand_uuid) AS product_brand_uuid
+        FROM `s_product`
         ORDER BY `create_time` DESC
         <if test="limit != null">
             LIMIT #{limit}
         </if>
     </select>
-    <select id="queryByProductTypeName" resultType="Product" resultMap="ProductResult">
+    <select id="queryByProductTypeName" resultMap="ProductResult">
         SELECT
-        p.uuid AS product_uuid,
+        BIN_TO_UUID(p.uuid) AS product_uuid,
         p.name AS product_name,
         p.`desc` AS product_desc,
         p.create_time AS product_create_time,
         p.price AS product_price,
         p.image_file_name AS product_image_file_name,
-        t.uuid AS product_type_uuid,
+        BIN_TO_UUID(t.uuid) AS product_type_uuid,
         t.name AS product_type_name,
         t.`desc` AS product_type_desc,
         t.icon_class_name AS product_type_icon_class_name,
-        p.brand_uuid AS product_brand_uuid
+        BIN_TO_UUID(p.brand_uuid) AS product_brand_uuid
         FROM `s_product` AS p LEFT JOIN `s_product_type` AS t ON p.type_uuid = t.uuid
         <if test="productTypeName != null">
             WHERE t.name = #{productTypeName}
@@ -54,7 +63,7 @@
             LIMIT #{limit}
         </if>
     </select>
-    <select id="queryBySales" resultType="Product" resultMap="ProductResult">
+    <select id="queryBySales" resultMap="ProductResult">
         SELECT
         s_order_product.uuid AS order_product_uuid,
         SUM(`product_count`) AS product_count,
@@ -73,5 +82,31 @@
         <if test="limit != null">
             LIMIT #{limit}
         </if>
+    </select>
+    <select id="queryByParams" resultMap="ProductResult">
+        SELECT
+        BIN_TO_UUID(uuid) AS product_uuid,
+        `name` AS product_name,
+        `desc` AS product_desc,
+        create_time AS product_create_time,
+        price AS product_price,
+        image_file_name AS product_image_file_name,
+        BIN_TO_UUID(type_uuid) AS product_type_uuid,
+        BIN_TO_UUID(brand_uuid) AS product_brand_uuid
+        FROM `s_product`
+        <where>
+            <if test="productTypeUUID != null">
+                type_uuid = UUID_TO_BIN(#{productTypeUUID})
+            </if>
+            <if test="brandUUIDs != null">
+                AND brand_uuid IN
+                <foreach collection="brandUUIDs" open="(" close=")" separator=", " item="value">
+                    UUID_TO_BIN(#{value})
+                </foreach>
+            </if>
+            <if test="keyword != null">
+                AND `name` LIKE CONCAT('%', #{keyword}, '%')
+            </if>
+        </where>
     </select>
 </mapper>

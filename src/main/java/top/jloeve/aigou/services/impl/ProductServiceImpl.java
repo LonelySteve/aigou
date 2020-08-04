@@ -9,6 +9,7 @@ import top.jloeve.aigou.mappers.ProductMapper;
 import top.jloeve.aigou.mappers.ProductTypeMapper;
 import top.jloeve.aigou.services.IProductService;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,5 +43,14 @@ public class ProductServiceImpl implements IProductService {
   @Override
   public List<Product> getByProductTypeName(String name, Integer limit) {
     return productMapper.queryByProductTypeName(name, limit);
+  }
+
+  @Override
+  public List<Product> getByParams(String productTypeUuid, String brands, String keyword) {
+    List<String> brandUUIDs = null;
+    if (brands != null) {
+      brandUUIDs = Arrays.stream(brands.split(",")).map(String::trim).collect(Collectors.toList());
+    }
+    return productMapper.queryByParams(productTypeUuid, brandUUIDs, keyword);
   }
 }

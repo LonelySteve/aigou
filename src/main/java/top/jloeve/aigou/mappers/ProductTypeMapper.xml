@@ -2,8 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="top.jloeve.aigou.mappers.ProductTypeMapper">
-    <select id="query" resultType="ProductType">
-        SELECT *
+    <select id="query" resultMap="top.jloeve.aigou.mappers.ProductMapper.ProductTypeResult">
+        SELECT BIN_TO_UUID(uuid) AS product_type_uuid,
+               `name`            AS product_type_name,
+               `desc`            AS product_type_desc,
+               icon_class_name   AS product_type_icon_class_name
         FROM `s_product_type`
+    </select>
+    <select id="queryById" resultMap="top.jloeve.aigou.mappers.ProductMapper.ProductTypeResult">
+        SELECT BIN_TO_UUID(uuid) AS product_type_uuid,
+               `name`            AS product_type_name,
+               `desc`            AS product_type_desc,
+               icon_class_name   AS product_type_icon_class_name
+        FROM `s_product_type`
+        WHERE `uuid` = UUID_TO_BIN(#{uuid})
     </select>
 </mapper>

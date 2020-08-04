@@ -15,4 +15,9 @@ public interface ProductMapper {
       @Param("productTypeName") String productTypeName, @Param("limit") Integer limit);
 
   List<Product> queryBySales(@Param("limit") Integer limit);
+
+  List<Product> queryByParams(
+      @Param("productTypeUUID") String productTypeUUID,
+      @Param("brandUUIDs") Iterable<String> brandUUIDs,
+      @Param("keyword") String keyword);
 }

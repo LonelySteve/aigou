@@ -32,4 +32,9 @@ public class SearchHistoryServiceImpl implements ISearchHistoryService {
   public List<SearchHistory> getRecentPopularSearchHistories(Integer limit) {
     return searchHistoryMapper.query(true, true, limit);
   }
+
+  @Override
+  public List<SearchHistory> getRecentPopularSearchHistories() {
+    return getRecentPopularSearchHistories(10);
+  }
 }
