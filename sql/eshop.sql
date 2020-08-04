@@ -166,14 +166,13 @@ DROP TABLE IF EXISTS `s_receiving_address`;
 
 CREATE TABLE `s_receiving_address`
 (
-    `uuid`                   binary(16)  NOT NULL COMMENT 'UUID',
-    `receiving_address_uuid` binary(16)  NOT NULL COMMENT '收货地址 UUID',
-    `receiving_person_name`  varchar(50) NOT NULL COMMENT '收件人姓名',
-    `mobile_phone`           bigint(20)  NOT NULL COMMENT '手机号',
-    `user_uuid`              binary(16)  NOT NULL COMMENT '此接收地址所属用户 UUID',
-    `is_default`             boolean     NOT NULL COMMENT '默认收货地址',
+    `uuid`                  binary(16)  NOT NULL COMMENT 'UUID',
+    `address`               binary(16)  NOT NULL COMMENT '收货地址',
+    `receiving_person_name` varchar(50) NOT NULL COMMENT '收件人姓名',
+    `mobile_phone`          bigint(20)  NOT NULL COMMENT '手机号',
+    `user_uuid`             binary(16)  NOT NULL COMMENT '此接收地址所属用户 UUID',
+    `is_default`            boolean     NOT NULL COMMENT '默认收货地址',
     PRIMARY KEY (`uuid`),
-    FOREIGN KEY (`receiving_address_uuid`) REFERENCES `s_receiving_address` (`uuid`),
     FOREIGN KEY (`user_uuid`) REFERENCES `s_user` (`uuid`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
