@@ -5,8 +5,8 @@ import top.jloeve.aigou.domains.IDomain;
 
 @Data
 public class Brand implements IDomain {
-  private String id;
-  private String brandName;
-  private String brandType;
-  private String brandImg;
+  private String uuid;
+  private String name;
+  private ProductType type;
+  private String imageFileName;
 }

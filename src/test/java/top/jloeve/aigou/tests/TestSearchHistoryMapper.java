@@ -27,10 +27,10 @@ public class TestSearchHistoryMapper extends TestCase {
 
     result = searchHistoryMapper.query(true, false, 2);
     assertEquals(2, result.size());
-    assertTrue(result.get(0).getNum() > result.get(1).getNum());
+    assertTrue(result.get(0).getCount() > result.get(1).getCount());
 
     result = searchHistoryMapper.query(false, true, 2);
     assertEquals(2, result.size());
-    assertTrue(result.get(0).getSearchTime().after(result.get(1).getSearchTime()));
+    assertTrue(result.get(0).getLatestSearchTime().after(result.get(1).getLatestSearchTime()));
   }
 }

@@ -5,8 +5,8 @@ import top.jloeve.aigou.domains.IDomain;
 
 @Data
 public class OrderProduct implements IDomain {
-  private String id;
-  private Integer productNum;
+  private String uuid;
+  private Integer productCount;
   private Product product;
   private Order order;
 }

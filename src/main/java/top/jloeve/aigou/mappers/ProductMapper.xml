@@ -5,24 +5,24 @@
 
 <mapper namespace="top.jloeve.aigou.mappers.ProductMapper">
     <resultMap id="ProductTypeResult" type="ProductType">
-        <id property="id" column="product_type_id"/>
-        <result column="product_type_name" property="productTypeName"/>
-        <result column="product_type_desc" property="productTypeDesc"/>
-        <result column="product_type_icon" property="productTypeIcon"/>
+        <id property="uuid" column="product_type_uuid"/>
+        <result column="product_type_name" property="name"/>
+        <result column="product_type_desc" property="desc"/>
+        <result column="product_type_icon_class_name" property="iconClassName"/>
     </resultMap>
     <resultMap id="ProductBrandResult" type="Brand">
-        <id property="id" column="product_brand_id"/>
-        <result column="product_brand_name" property="brandName"/>
-        <result column="product_brand_type" property="brandType"/>
-        <result column="product_brand_img" property="brandImg"/>
+        <id property="uuid" column="product_brand_uuid"/>
+        <result column="product_brand_name" property="name"/>
+        <result column="product_brand_img" property="imageFileName"/>
+        <association property="type" resultMap="ProductTypeResult"/>
     </resultMap>
     <resultMap id="ProductResult" type="Product">
-        <id column="product_id" property="id"/>
-        <result column="product_name" property="productName"/>
-        <result column="product_image" property="productImage"/>
+        <id column="product_uuid" property="uuid"/>
+        <result column="product_name" property="name"/>
+        <result column="product_image_file_name" property="imageFileName"/>
         <result column="product_price" property="price"/>
-        <result column="product_desc" property="productDesc"/>
-        <result column="create_time" property="createTime"/>
+        <result column="product_desc" property="desc"/>
+        <result column="product_create_time" property="createTime"/>
         <association property="type" resultMap="ProductTypeResult"/>
         <association property="brand" resultMap="ProductBrandResult"/>
     </resultMap>
@@ -35,21 +35,41 @@
     </select>
     <select id="queryByProductTypeName" resultType="Product" resultMap="ProductResult">
         SELECT
-        p.id as product_id,
-        p.product_name as product_name,
-        p.product_desc as product_desc,
-        p.create_time as create_time,
-        p.price as product_price,
-        p.product_image as product_image,
-        t.id as product_type_id,
-        t.product_type_name as product_type_name,
-        t.product_type_desc as product_type_desc,
-        t.product_type_icon as product_type_icon,
-        p.product_brand as product_brand_id
-        FROM `s_product` AS p LEFT JOIN `s_product_type` AS t ON p.product_type = t.id
+        p.uuid AS product_uuid,
+        p.name AS product_name,
+        p.`desc` AS product_desc,
+        p.create_time AS product_create_time,
+        p.price AS product_price,
+        p.image_file_name AS product_image_file_name,
+        t.uuid AS product_type_uuid,
+        t.name AS product_type_name,
+        t.`desc` AS product_type_desc,
+        t.icon_class_name AS product_type_icon_class_name,
+        p.brand_uuid AS product_brand_uuid
+        FROM `s_product` AS p LEFT JOIN `s_product_type` AS t ON p.type_uuid = t.uuid
         <if test="productTypeName != null">
-            WHERE `product_type_name` = #{productTypeName}
+            WHERE t.name = #{productTypeName}
         </if>
+        <if test="limit != null">
+            LIMIT #{limit}
+        </if>
+    </select>
+    <select id="queryBySales" resultType="Product" resultMap="ProductResult">
+        SELECT
+        s_order_product.uuid AS order_product_uuid,
+        SUM(`product_count`) AS product_count,
+        `product_uuid`,
+        `type_uuid` AS product_type_uuid,
+        `name` AS product_name,
+        `image_file_name` AS product_image_file_name,
+        `price` AS product_price,
+        `desc` AS product_desc,
+        `create_time` AS product_create_time,
+        `brand_uuid` AS product_brand_uuid
+        FROM aigou.s_order_product
+        LEFT JOIN `s_product` ON s_product.uuid = s_order_product.product_uuid
+        GROUP BY `product_uuid`
+        ORDER BY `product_count` DESC
         <if test="limit != null">
             LIMIT #{limit}
         </if>

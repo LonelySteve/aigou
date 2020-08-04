@@ -5,7 +5,7 @@ import top.jloeve.aigou.domains.IDomain;
 
 @Data
 public class Carousel implements IDomain {
-  public String id;
-  public String url;
+  public String uuid;
+  public String imageFileName;
   public Integer sequenceNum;
 }

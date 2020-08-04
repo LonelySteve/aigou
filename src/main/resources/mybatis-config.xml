@@ -10,12 +10,12 @@
     <typeAliases>
         <typeAlias type="top.jloeve.aigou.domains.impl.Brand" alias="Brand"/>
         <typeAlias type="top.jloeve.aigou.domains.impl.Carousel" alias="Carousel"/>
+        <typeAlias type="top.jloeve.aigou.domains.impl.Order" alias="Order"/>
+        <typeAlias type="top.jloeve.aigou.domains.impl.OrderProduct" alias="OrderProduct"/>
         <typeAlias type="top.jloeve.aigou.domains.impl.Product" alias="Product"/>
         <typeAlias type="top.jloeve.aigou.domains.impl.ProductType" alias="ProductType"/>
-        <typeAlias type="top.jloeve.aigou.domains.impl.OrderProduct" alias="OrderProduct"/>
+        <typeAlias type="top.jloeve.aigou.domains.impl.ReceivingAddress" alias="ReceivingAddress"/>
         <typeAlias type="top.jloeve.aigou.domains.impl.SearchHistory" alias="SearchHistory"/>
-        <typeAlias type="top.jloeve.aigou.domains.impl.OrderProduct" alias="OrderProduct"/>
-        <typeAlias type="top.jloeve.aigou.domains.impl.Order" alias="Order"/>
         <typeAlias type="top.jloeve.aigou.domains.impl.User" alias="User"/>
     </typeAliases>
 </configuration>

@@ -33,11 +33,11 @@ public class TestProductMapper extends TestCase {
 
     Product product = products.get(0);
 
-    assertNotNull(product.getId());
+    assertNotNull(product.getUuid());
     assertNotNull(product.getCreateTime());
     assertNotNull(product.getPrice());
-    assertNotNull(product.getProductImage());
-    assertNotNull(product.getProductName());
+    assertNotNull(product.getImageFileName());
+    assertNotNull(product.getName());
   }
 
   @Test
@@ -54,13 +54,35 @@ public class TestProductMapper extends TestCase {
     assertEquals(1, products.size());
 
     Product product = products.get(0);
-    assertNotNull(product.getId());
-    assertNotNull(product.getProductName());
-    assertNotNull(product.getProductDesc());
+    assertNotNull(product.getUuid());
+    assertNotNull(product.getName());
+    assertNotNull(product.getDesc());
     assertNotNull(product.getPrice());
-    assertNotNull(product.getProductImage());
+    assertNotNull(product.getImageFileName());
     assertNotNull(product.getCreateTime());
     assertNotNull(product.getType());
     assertNotNull(product.getBrand());
+  }
+
+  @Test
+  public void testQueryBySales() {
+    List<Product> products;
+
+    products = productMapper.queryBySales(null);
+    assertTrue(products.size() > 0);
+
+    products = productMapper.queryBySales(1);
+    assertEquals(1, products.size());
+
+    Product product = products.get(0);
+    assertNotNull(product.getUuid());
+    assertNotNull(product.getDesc());
+    assertNotNull(product.getImageFileName());
+    assertNotNull(product.getName());
+    assertNotNull(product.getType());
+    assertNotNull(product.getType().getUuid());
+    assertNotNull(product.getBrand());
+    assertNotNull(product.getBrand().getUuid());
+    assertNotNull(product.getCreateTime());
   }
 }

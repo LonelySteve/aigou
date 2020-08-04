@@ -40,8 +40,9 @@
             </div>
             <!--热搜-->
             <p class="hotkey">
-                <a th:each="searchHistory:${searchHistories }" href="javascript:;;" class="hotSearch"
-                   th:text="${searchHistory.searchWords }"></a>
+                <!--/*@thymesVar id="searchHistories" type="java.util.List<top.jloeve.aigou.domains.impl.SearchHistory>"*/-->
+                <a th:each="searchHistory:${searchHistories}" href="javascript:;;" class="hotSearch"
+                   th:text="${searchHistory.keyword }"></a>
             </p>
         </div>
     </div>

@@ -8,8 +8,8 @@ import java.util.Date;
 
 @Data
 public class Order implements IDomain {
-  private String id;
+  private String uuid;
   private Date createTime;
-  private String receivingAddress;
+  private ReceivingAddress receivingAddress;
   private User user;
 }

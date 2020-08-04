@@ -5,8 +5,8 @@ import top.jloeve.aigou.domains.IDomain;
 
 @Data
 public class ProductType implements IDomain {
-  private String id;
-  private String productTypeName;
-  private String productTypeDesc;
-  private String productTypeIcon;
+  private String uuid;
+  private String name;
+  private String desc;
+  private String iconClassName;
 }

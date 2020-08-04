@@ -8,5 +8,5 @@ public class User implements IDomain {
   private String id;
   private String username;
   private String password;
-  private Integer type;
+  private Integer typeId;
 }

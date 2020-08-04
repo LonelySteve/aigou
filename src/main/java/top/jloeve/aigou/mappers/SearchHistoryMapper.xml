@@ -4,8 +4,8 @@
     <select id="query" resultType="SearchHistory">
         SELECT * FROM `s_search_history`
         <trim prefix="ORDER BY" suffixOverrides=",">
-            <if test="bySearchCount">`num` DESC,</if>
-            <if test="byRecent">`search_time` DESC</if>
+            <if test="bySearchCount">`count` DESC,</if>
+            <if test="byRecent">`latest_search_time` DESC</if>
         </trim>
         <if test="limit != null">
             LIMIT #{limit}

@@ -8,10 +8,11 @@
     <!--商品分类-->
     <div class="classify">
         <ul>
+            <!--/*@thymesVar id="allProductTypes" type="java.util.List<top.jloeve.aigou.domains.impl.ProductType>"*/-->
             <li th:each="productType:${allProductTypes}">
                 <h3>
-                    <a th:href="@{|/product-type/${productType.id}|}" th:text="${productType.productTypeName}">
-                        <i th:class="'iconfont '+ ${productType.productTypeIcon}"></i>
+                    <a th:href="@{|/product-type/${productType.uuid}|}" th:text="${productType.name}">
+                        <i th:class="'iconfont '+ ${productType.iconClassName}"></i>
                     </a>
                 </h3>
             </li>
@@ -19,9 +20,10 @@
     </div>
     <!--轮播-->
     <div class="banner" id="main">
+        <!--/*@thymesVar id="allCarouselFigures" type="java.util.List<top.jloeve.aigou.domains.impl.Carousel>"*/-->
         <ul id="pic">
             <li th:each="carouselFigure:${allCarouselFigures}">
-                <a href="#"><img th:src="@{|/upload/eshop/${carouselFigure.url}|}" alt="" width="1020px"
+                <a href="#"><img th:src="@{|/upload/eshop/${carouselFigure.imageFileName}|}" alt="" width="1020px"
                                  height="480px"/></a>
             </li>
         </ul>
@@ -39,10 +41,11 @@
         <h3 class="title">新品</h3>
         <div class="new-list">
             <ul>
+                <!--/*@thymesVar id="newProducts" type="java.util.List<top.jloeve.aigou.domains.impl.Product>"*/-->
                 <li th:each="newProduct:${newProducts}">
                     <a href="/front/product_detail/productDetail?id=${newProduct.id}">
-                        <img th:src="@{|/upload/eshop/${newProduct.productImage}|}" alt="" width="90px" height="90px"/>
-                        <p th:text="${newProduct.productName}"></p>
+                        <img th:src="@{|/upload/eshop/${newProduct.imageFileName}|}" alt="" width="90px" height="90px"/>
+                        <p th:text="${newProduct.name}"></p>
                     </a>
                 </li>
             </ul>
@@ -53,11 +56,12 @@
         <h3 class="title">排行榜</h3>
         <div class="rank-list">
             <ul>
+                <!--/*@thymesVar id="rankings" type="java.util.List<top.jloeve.aigou.domains.impl.Product>"*/-->
                 <li th:each="ranking,step:${rankings}">
                     <a href="/front/product_detail/productDetail?id=${ranking.id}">
                         <span class="rank-icon${step.count}" th:text="${step.count}"></span>
-                        <img th:src="@{|/upload/eshop/${ranking.productImage}|}" alt="" width="90px" height="90px"/>
-                        <p th:text="${ranking.productName}"></p>
+                        <img th:src="@{|/upload/eshop/${ranking.imageFileName}|}" alt="" width="90px" height="90px"/>
+                        <p th:text="${ranking.name}"></p>
                     </a>
                 </li>
             </ul>
@@ -74,6 +78,10 @@
         <li><a href="#top" class="nav-top">返回顶部</a></li>
     </ul>
 </div>
+<!--/*@thymesVar id="list1" type="java.util.List<top.jloeve.aigou.domains.impl.Product>"*/-->
+<!--/*@thymesVar id="list2" type="java.util.List<top.jloeve.aigou.domains.impl.Product>"*/-->
+<!--/*@thymesVar id="list3" type="java.util.List<top.jloeve.aigou.domains.impl.Product>"*/-->
+<!--/*@thymesVar id="list4" type="java.util.List<top.jloeve.aigou.domains.impl.Product>"*/-->
 <!--全球进口-->
 <div class="global-foot w1230" id="global-foot">
     <h3 class="h-title">全球进口</h3>
@@ -81,8 +89,8 @@
         <ul class="clear-float">
             <li th:each="p1:${list1}">
                 <a href="/front/product_detail/productDetail?id=${p1.id}">
-                    <p th:text="${p1.productName}"></p>
-                    <img th:src="@{|/upload/eshop/${p1.productImage}|}" alt="" width="150px" height="150px"/></a>
+                    <p th:text="${p1.name}"></p>
+                    <img th:src="@{|/upload/eshop/${p1.imageFileName}|}" alt="" width="150px" height="150px"/></a>
             </li>
         </ul>
     </div>
@@ -94,9 +102,9 @@
         <ul class="clear-float">
             <li th:each="p2:${list2}">
                 <a href="/front/product_detail/productDetail?id=${p2.id}">
-                    <div class="c-img"><img th:src="@{|/upload/eshop/${p2.productImage}|}" alt="" width="180px"
+                    <div class="c-img"><img th:src="@{|/upload/eshop/${p2.imageFileName}|}" alt="" width="180px"
                                             height="180px"/></div>
-                    <p class="c-title" th:text="${p2.productName}"></p>
+                    <p class="c-title" th:text="${p2.name}"></p>
                     <span class="c-price" th:text="'￥'+${p2.price}"></span>
                 </a></li>
         </ul>
@@ -109,9 +117,9 @@
         <ul class="clear-float">
             <li th:each="p3:${list3}">
                 <a href="/front/product_detail/productDetail?id=${p3.id}">
-                    <img th:src="@{|/upload/eshop/${p3.productImage}|}" alt="" width="100px" height="100px"/>
+                    <img th:src="@{|/upload/eshop/${p3.imageFileName}|}" alt="" width="100px" height="100px"/>
                     <div class="mod-info">
-                        <p class="m-title" th:text="${p3.productName}"></p>
+                        <p class="m-title" th:text="${p3.name}"></p>
                         <span class="m-price" th:text="'￥'+${p3.price}"></span>
                     </div>
                 </a></li>
@@ -125,8 +133,8 @@
         <ul class="clear-float">
             <li th:each="p4:${list4}">
                 <a href="/front/product_detail/productDetail?id=${p4.id}">
-                    <img th:src="@{|/upload/eshop/${p4.productImage}|}" alt="" width="180px" height="180px"/>
-                    <p class="c-title" th:text="${p4.productName}"></p>
+                    <img th:src="@{|/upload/eshop/${p4.imageFileName}|}" alt="" width="180px" height="180px"/>
+                    <p class="c-title" th:text="${p4.name}"></p>
                     <span class="c-price" th:text="'￥'+${p4.price}"></span>
                 </a></li>
         </ul>
