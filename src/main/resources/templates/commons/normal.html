@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head">
+    <meta charset="utf-8"/>
+    <link rel="icon" type="image/x-icon" href="/img/title-icon.jpg"/>
+    <title>爱购首页</title>
+    <link rel="stylesheet" type="text/css" href="/iconfont/iconfont.css">
+    <link rel="stylesheet" href="/css/reset.css"/>
+    <link rel="stylesheet" href="/css/top.css"/>
+    <link rel="stylesheet" href="/css/index.css"/>
+    <link rel="stylesheet" href="/css/footer.css"/>
+    <link rel="stylesheet" href="/css/font-awesome-4.7.0/Font-Awesome-master/css/font-awesome.min.css"/>
+    <script type="text/javascript" src="/js/banner.js"></script>
+</head>
+<body>
+<!--头部-->
+<div th:fragment="header" class="top" id="top">
+    <!--头部bar-->
+    <div class="top-bar">
+        <div class="w1230 top-bar-main">
+            <a href="/front/index" class="toIndex"> <i
+                    class="fa fa-home"></i> <span>爱购网首页</span>
+            </a>
+            <ul>
+                <li><a href="/front/login/loginPage" class="login">登录</a></li>
+                <li><a href="/front/register/registerPage" class="register">注册</a></li>
+            </ul>
+        </div>
+    </div>
+    <!--logo+搜索-->
+    <div class="top-header w1230 clear-float">
+        <a href="/front/index" class="logo">
+            <img src="/img/logo.png" width=""/>
+        </a>
+        <div class="top-header-right">
+            <!--搜索框-->
+            <div class="search clear-float">
+                <input type="text" placeholder="牛奶" class="search-txt"/>
+                <a href="#" class="search-btn">搜索</a>
+            </div>
+            <!--热搜-->
+            <p class="hotkey">
+                <a th:each="searchHistory:${searchHistories }" href="javascript:;;" class="hotSearch"
+                   th:text="${searchHistory.searchWords }"></a>
+            </p>
+        </div>
+    </div>
+</div>
+<!--脚注-->
+<div th:fragment="footer" class="footer">
+    <p class="w1230">
+        <a href="#">关于爱购</a>
+        <a href="#">合作伙伴</a>
+        <a href="#">营销中心</a>
+        <a href="#">廉正举报</a>
+        <a href="#">联系客服</a>
+        <a href="#">开发平台</a>
+        <a href="#">诚征英才</a>
+        <a href="#">联系我们</a>
+        <a href="#">网站地图</a>
+        <a href="#">知识产权</a><span>|</span>
+        <span>&copy;2018-2020 igo.com 版权所有</span>
+    </p>
+</div>
+</body>
+</html>
