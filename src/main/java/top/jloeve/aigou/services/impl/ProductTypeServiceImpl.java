@@ -18,12 +18,12 @@ public class ProductTypeServiceImpl implements IProductTypeService {
   }
 
   @Override
-  public ProductType getById(String uuid) {
-    return productTypeMapper.queryById(uuid);
+  public ProductType getByParams(String productTypeUUID, String[] brands, String keyword) {
+    return productTypeMapper.queryByParams(productTypeUUID, brands, keyword);
   }
 
   @Override
-  public List<ProductType> getAll() {
-    return productTypeMapper.query();
+  public String getSearchAttributeName() {
+    return "targetProductType";
   }
 }

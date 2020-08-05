@@ -12,39 +12,30 @@ import top.jloeve.aigou.services.ICarouselService;
 import top.jloeve.aigou.services.IProductService;
 import top.jloeve.aigou.services.ISearchHistoryService;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Controller
 @RequestMapping("")
-public class IndexController {
-
-  private final ISearchHistoryService searchHistoryService;
-
+public class IndexController extends BaseController {
   private final IProductService productService;
-
   private final ICarouselService carouseService;
 
   @Autowired
-  public IndexController(
-      ISearchHistoryService searchHistoryService,
-      IProductService productService,
-      ICarouselService carouseService) {
-    this.searchHistoryService = searchHistoryService;
+  public IndexController(IProductService productService, ICarouselService carouseService) {
     this.productService = productService;
     this.carouseService = carouseService;
   }
 
+  @Override
+  public String[] getAttributeProviderNames() {
+    return new String[] {"allProductTypes", "searchHistories"};
+  }
+
   @RequestMapping("")
   public String index(ModelMap modelMap) {
-    List<SearchHistory> recentSearchHistories =
-        searchHistoryService.getRecentPopularSearchHistories(6);
-    modelMap.addAttribute("searchHistories", recentSearchHistories);
-
-    List<ProductType> allProductTypes = productService.getAllProductTypes();
-    modelMap.addAttribute("allProductTypes", allProductTypes);
+    mergeInheritedAttributes(modelMap);
 
     List<Carousel> carousels = carouseService.getCarousels(3);
     modelMap.addAttribute("allCarouselFigures", carousels);
@@ -69,6 +60,6 @@ public class IndexController {
       counter++;
     }
 
-    return "index/index";
+    return "index";
   }
 }

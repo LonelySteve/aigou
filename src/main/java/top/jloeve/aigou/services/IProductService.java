@@ -5,7 +5,7 @@ import top.jloeve.aigou.domains.impl.ProductType;
 
 import java.util.List;
 
-public interface IProductService extends IService {
+public interface IProductService extends ISearchService<List<Product>> {
 
   List<ProductType> getAllProductTypes();
 
@@ -26,6 +26,4 @@ public interface IProductService extends IService {
   }
 
   List<Product> getByProductTypeName(String name, Integer limit);
-
-  List<Product> getByParams(String productTypeUUID, String brands, String keyword);
 }

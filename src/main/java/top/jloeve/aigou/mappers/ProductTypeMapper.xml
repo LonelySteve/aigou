@@ -2,19 +2,25 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="top.jloeve.aigou.mappers.ProductTypeMapper">
-    <select id="query" resultMap="top.jloeve.aigou.mappers.ProductMapper.ProductTypeResult">
+    <sql id="productTypeOneTableBasicQuery">
         SELECT BIN_TO_UUID(uuid) AS product_type_uuid,
                `name`            AS product_type_name,
                `desc`            AS product_type_desc,
                icon_class_name   AS product_type_icon_class_name
         FROM `s_product_type`
+    </sql>
+    <select id="queryAll" resultMap="top.jloeve.aigou.mappers.ProductMapper.ProductTypeResult">
+        <include refid="productTypeOneTableBasicQuery"/>
     </select>
-    <select id="queryById" resultMap="top.jloeve.aigou.mappers.ProductMapper.ProductTypeResult">
-        SELECT BIN_TO_UUID(uuid) AS product_type_uuid,
-               `name`            AS product_type_name,
-               `desc`            AS product_type_desc,
-               icon_class_name   AS product_type_icon_class_name
-        FROM `s_product_type`
-        WHERE `uuid` = UUID_TO_BIN(#{uuid})
+    <select id="queryByParams" resultMap="top.jloeve.aigou.mappers.ProductMapper.ProductTypeResult">
+        <choose>
+            <when test="productTypeUUID == null">
+                SELECT NULL;
+            </when>
+            <otherwise>
+                <include refid="productTypeOneTableBasicQuery"/>
+                WHERE `uuid` = UUID_TO_BIN(#{productTypeUUID})
+            </otherwise>
+        </choose>
     </select>
 </mapper>

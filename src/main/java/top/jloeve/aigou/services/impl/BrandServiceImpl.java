@@ -18,7 +18,12 @@ public class BrandServiceImpl implements IBrandService {
   }
 
   @Override
-  public List<Brand> getByTypeId(String productTypeUuid) {
-    return brandMapper.queryByTypeId(productTypeUuid);
+  public List<Brand> getByParams(String productTypeUUID, String[] brands, String keyword) {
+    return brandMapper.queryByParams(productTypeUUID, brands, keyword);
+  }
+
+  @Override
+  public String getSearchAttributeName() {
+    return "brands";
   }
 }

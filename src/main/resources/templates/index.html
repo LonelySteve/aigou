@@ -1,7 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="commons/normal::head"></head>
+<head>
+    <div th:replace="commons/normal::head"></div>
+    <link rel="stylesheet" th:href="@{~/css/index.css}"/>
+    <title>爱购网首页</title>
+    <script type="text/javascript" th:src="@{~/js/banner.js}"></script>
+</head>
 <body>
+<!--头部-->
 <div th:replace="commons/normal::header"></div>
 <!--分类+banner-->
 <div class="main w1230 clear-float">
@@ -11,7 +17,7 @@
             <!--/*@thymesVar id="allProductTypes" type="java.util.List<top.jloeve.aigou.domains.impl.ProductType>"*/-->
             <li th:each="productType:${allProductTypes}">
                 <h3>
-                    <a th:href="@{/product-type(uuid=${productType.uuid})}" th:text="${productType.name}">
+                    <a th:href="@{/search(product-type-uuid=${productType.uuid})}" th:text="${productType.name}">
                         <i th:class="'iconfont '+ ${productType.iconClassName}"></i>
                     </a>
                 </h3>
@@ -35,7 +41,7 @@
 </div>
 <!--新品+排行榜-->
 <div class="new-rank w1230 clear-float">
-    <a href="#" class="new-img"><img src="/img/new.jpg" width="267px" height="400px"/></a>
+    <a href="#" class="new-img"><img th:src="@{~/img/new.jpg}" width="267px" height="400px"/></a>
     <!--新品-->
     <div class="new">
         <h3 class="title">新品</h3>
@@ -43,8 +49,9 @@
             <ul>
                 <!--/*@thymesVar id="newProducts" type="java.util.List<top.jloeve.aigou.domains.impl.Product>"*/-->
                 <li th:each="newProduct:${newProducts}">
-                    <a href="/front/product_detail/productDetail?id=${newProduct.id}">
-                        <img th:src="@{|/upload/eshop/${newProduct.imageFileName}|}" alt="" width="90px" height="90px"/>
+                    <a th:href="@{/product-detail/{product-uuid}(product-uuid=${newProduct.uuid})}">
+                        <img th:src="@{~/upload/eshop/{img-name}(img-name=${newProduct.imageFileName})}" alt=""
+                             width="90px" height="90px"/>
                         <p th:text="${newProduct.name}"></p>
                     </a>
                 </li>
@@ -57,10 +64,12 @@
         <div class="rank-list">
             <ul>
                 <!--/*@thymesVar id="rankings" type="java.util.List<top.jloeve.aigou.domains.impl.Product>"*/-->
-                <li th:each="ranking,step:${rankings}">
-                    <a href="/front/product_detail/productDetail?id=${ranking.id}">
-                        <span class="rank-icon${step.count}" th:text="${step.count}"></span>
-                        <img th:src="@{|/upload/eshop/${ranking.imageFileName}|}" alt="" width="90px" height="90px"/>
+                <li th:each="ranking, rankingStat:${rankings}">
+                    <!--/*@thymesVar id="newProduct" type="top.jloeve.aigou.domains.impl.Product"*/-->
+                    <a th:href="@{/product-detail/{product-uuid}(product-uuid=${ranking.uuid})}">
+                        <span class="rank-icon${step.count}" th:text="${rankingStat.count}"></span>
+                        <img th:src="@{~/upload/eshop/{img-name}(img-name=${ranking.imageFileName})}" alt=""
+                             width="90px" height="90px"/>
                         <p th:text="${ranking.name}"></p>
                     </a>
                 </li>
@@ -88,7 +97,7 @@
     <div class="global-list">
         <ul class="clear-float">
             <li th:each="p1:${list1}">
-                <a href="/front/product_detail/productDetail?id=${p1.id}">
+                <a th:href="@{~/product-detail/{uuid}(uuid=${p1.uuid})}">
                     <p th:text="${p1.name}"></p>
                     <img th:src="@{|/upload/eshop/${p1.imageFileName}|}" alt="" width="150px" height="150px"/></a>
             </li>
@@ -101,7 +110,7 @@
     <div class="cloth-list">
         <ul class="clear-float">
             <li th:each="p2:${list2}">
-                <a href="/front/product_detail/productDetail?id=${p2.id}">
+                <a th:href="@{~/product-detail/{uuid}(uuid=${p2.uuid})}">
                     <div class="c-img"><img th:src="@{|/upload/eshop/${p2.imageFileName}|}" alt="" width="180px"
                                             height="180px"/></div>
                     <p class="c-title" th:text="${p2.name}"></p>
@@ -116,7 +125,7 @@
     <div class="mod-list">
         <ul class="clear-float">
             <li th:each="p3:${list3}">
-                <a href="/front/product_detail/productDetail?id=${p3.id}">
+                <a th:href="@{~/product-detail/{uuid}(uuid=${p3.uuid})}">
                     <img th:src="@{|/upload/eshop/${p3.imageFileName}|}" alt="" width="100px" height="100px"/>
                     <div class="mod-info">
                         <p class="m-title" th:text="${p3.name}"></p>
@@ -132,7 +141,7 @@
     <div class="book-list">
         <ul class="clear-float">
             <li th:each="p4:${list4}">
-                <a href="/front/product_detail/productDetail?id=${p4.id}">
+                <a th:href="@{~/product-detail/{uuid}(uuid=${p4.uuid})}">
                     <img th:src="@{|/upload/eshop/${p4.imageFileName}|}" alt="" width="180px" height="180px"/>
                     <p class="c-title" th:text="${p4.name}"></p>
                     <span class="c-price" th:text="'￥'+${p4.price}"></span>
@@ -142,14 +151,12 @@
 </div>
 <!--脚注-->
 <div th:replace="commons/normal::footer"></div>
-<!-- 隐藏内容 -->
-<input type="hidden" name="type" id="ptype" value="">
 <script src="/plugs/jquery.js"></script>
 <script type="text/javascript">
     $(function () {
         $('.search-btn').on('click', function () {
             var words = $('.search-txt').val();
-            window.location.href = "/front/productType/index?type=" + $('#ptype').val() + "&words=" + words;
+            window.location.href = "/search?&keyword=" + words;
         })
 
         $('.hotSearch').on('click', function () {

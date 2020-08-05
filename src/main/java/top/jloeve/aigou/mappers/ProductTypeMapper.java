@@ -6,7 +6,6 @@ import top.jloeve.aigou.domains.impl.ProductType;
 import java.util.List;
 
 @Repository
-public interface ProductTypeMapper {
-  List<ProductType> query();
-  ProductType queryById(String uuid);
+public interface ProductTypeMapper extends ISearchMapper<ProductType> {
+  List<ProductType> queryAll();
 }

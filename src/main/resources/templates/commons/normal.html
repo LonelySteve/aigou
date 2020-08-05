@@ -1,70 +1,91 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head th:fragment="head">
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/x-icon" th:href="@{~/img/title-icon.jpg}" />
-    <title>爱购首页</title>
-    <link rel="stylesheet" type="text/css" th:href="@{~/iconfont/iconfont.css}">
-    <link rel="stylesheet" th:href="@{~/css/reset.css}" />
-    <link rel="stylesheet" th:href="@{~/css/top.css}" />
-    <link rel="stylesheet" th:href="@{~/css/index.css}" />
-    <link rel="stylesheet" th:href="@{~/css/footer.css}" />
-    <link rel="stylesheet" href="/css/classify.css" />
-    <link rel="stylesheet" th:href="@{~/css/font-awesome-4.7.0/Font-Awesome-master/css/font-awesome.min.css}" />
-    <script type="text/javascript" th:src="@{~/js/banner.js}"></script>
-</head>
 
 <body>
-    <!--头部-->
-    <div th:fragment="header" class="top" id="top">
-        <!--头部bar-->
-        <div class="top-bar">
-            <div class="w1230 top-bar-main">
-                <a href="/front/index" class="toIndex"> <i class="fa fa-home"></i> <span>爱购网首页</span>
+<div th:fragment="head" th:remove="tag">
+    <meta charset="utf-8"/>
+    <link rel="icon" type="image/x-icon" th:href="@{~/img/title-icon.jpg}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{~/iconfont/iconfont.css}"/>
+    <link rel="stylesheet" th:href="@{~/css/reset.css}"/>
+    <link rel="stylesheet" th:href="@{~/css/top.css}"/>
+    <link rel="stylesheet" th:href="@{~/css/footer.css}"/>
+    <link rel="stylesheet" th:href="@{~/css/font-awesome-4.7.0/Font-Awesome-master/css/font-awesome.min.css}"/>
+</div>
+<!--头部-->
+<div th:fragment="header" class="top" id="top">
+    <!--头部bar-->
+    <div class="top-bar">
+        <div class="w1230 top-bar-main">
+            <a th:href="@{~/}" class="toIndex"> <i class="fa fa-home"></i> <span>爱购网首页</span>
+            </a>
+            <ul>
+                <li><a th:href="@{~/login}" class="login">登录</a></li>
+                <li><a th:href="@{~/register}" class="register">注册</a></li>
+            </ul>
+        </div>
+    </div>
+    <!--logo+搜索-->
+    <div class="top-header w1230 clear-float">
+        <a th:href="@{~/}" class="logo">
+            <img th:src="@{~/img/logo.png}" width="" alt="logo"/>
+        </a>
+        <div class="top-header-right">
+            <!--搜索框-->
+            <div class="search clear-float">
+                <input type="text" placeholder="牛奶" class="search-txt"/>
+                <a href="#" class="search-btn">搜索</a>
+            </div>
+            <!--热搜-->
+            <p class="hotkey">
+                <!--/*@thymesVar id="searchHistories" type="java.util.List<top.jloeve.aigou.domains.impl.SearchHistory>"*/-->
+                <!--/*@thymesVar id="searchHistory" type="top.jloeve.aigou.domains.impl.SearchHistory"*/-->
+                <a th:each="searchHistory : ${searchHistories}"
+                   th:href="@{~/search(keyword=${searchHistory.keyword})}"
+                   href="javascript:void(0);" class="hotSearch"
+                   th:text="${searchHistory.keyword}">
+                    ${searchHistory.keyword}
                 </a>
+            </p>
+        </div>
+    </div>
+</div>
+<!--导航栏-->
+<div th:fragment="nav" th:class="nav">
+    <div th:class="w1230">
+        <div id="all-goods">
+            <span th:class="all-goods">所有商品分类</span>
+            <div th:class="nav-er" id="nav-er">
                 <ul>
-                    <li><a href="/front/login/loginPage" class="login">登录</a></li>
-                    <li><a href="/front/register/registerPage" class="register">注册</a></li>
+                    <!--/*@thymesVar id="allProductTypes" type="java.util.List<top.jloeve.aigou.domains.impl.ProductType>"*/-->
+                    <li th:each="productType:${allProductTypes}">
+                        <h3>
+                            <i th:class="|iconfont ${productType.iconClassName}|"></i>
+                            <a th:href="@{~/search(product-type-uuid=${productType.uuid})}" th:text="${productType.name}">
+                            </a>
+                        </h3>
+                    </li>
                 </ul>
             </div>
         </div>
-        <!--logo+搜索-->
-        <div class="top-header w1230 clear-float">
-            <a href="/front/index" class="logo">
-                <img th:src="@{~/img/logo.png}" width="" />
-            </a>
-            <div class="top-header-right">
-                <!--搜索框-->
-                <div class="search clear-float">
-                    <input type="text" placeholder="牛奶" class="search-txt" />
-                    <a href="#" class="search-btn">搜索</a>
-                </div>
-                <!--热搜-->
-                <p class="hotkey">
-                    <!--/*@thymesVar id="searchHistories" type="java.util.List<top.jloeve.aigou.domains.impl.SearchHistory>"*/-->
-                    <a th:each="searchHistory:${searchHistories}" href="javascript:;;" class="hotSearch"
-                        th:text="${searchHistory.keyword }"></a>
-                </p>
-            </div>
-        </div>
     </div>
-    <!--脚注-->
-    <div th:fragment="footer" class="footer">
-        <p class="w1230">
-            <a href="#">关于爱购</a>
-            <a href="#">合作伙伴</a>
-            <a href="#">营销中心</a>
-            <a href="#">廉正举报</a>
-            <a href="#">联系客服</a>
-            <a href="#">开发平台</a>
-            <a href="#">诚征英才</a>
-            <a href="#">联系我们</a>
-            <a href="#">网站地图</a>
-            <a href="#">知识产权</a><span>|</span>
-            <span>&copy;2018-2020 igo.com 版权所有</span>
-        </p>
-    </div>
-</body>
+</div>
+<!--脚注-->
+<div th:fragment="footer" class="footer">
+    <p class="w1230">
+        <a href="#">关于爱购</a>
+        <a href="#">合作伙伴</a>
+        <a href="#">营销中心</a>
+        <a href="#">廉正举报</a>
+        <a href="#">联系客服</a>
+        <a href="#">开发平台</a>
+        <a href="#">诚征英才</a>
+        <a href="#">联系我们</a>
+        <a href="#">网站地图</a>
+        <a href="#">知识产权</a><span>|</span>
+        <span>&copy;2018-2020 igo.com 版权所有</span>
+    </p>
+</div>
 
+</body>
 </html>

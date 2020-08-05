@@ -1,8 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="top.jloeve.aigou.mappers.SearchHistoryMapper">
-    <select id="query" resultType="SearchHistory">
-        SELECT * FROM `s_search_history`
+    <resultMap id="SearchHistoryResult" type="SearchHistory">
+        <result property="uuid" column="search_history_uuid"/>
+        <result property="keyword" column="search_history_keyword"/>
+        <result property="count" column="search_history_count"/>
+        <result property="latestSearchTime" column="latest_search_time"/>
+    </resultMap>
+    <select id="query" resultMap="SearchHistoryResult">
+        SELECT
+        BIN_TO_UUID(uuid) AS search_history_uuid,
+        keyword as search_history_keyword,
+        count as search_history_count,
+        latest_search_time
+        FROM `s_search_history`
         <trim prefix="ORDER BY" suffixOverrides=",">
             <if test="bySearchCount">`count` DESC,</if>
             <if test="byRecent">`latest_search_time` DESC</if>
@@ -11,4 +22,10 @@
             LIMIT #{limit}
         </if>
     </select>
+    <update id="updateSearchHistoryCount">
+        INSERT INTO `s_search_history`
+        VALUES (UUID_TO_BIN(UUID()), #{keyword}, 1, NOW())
+        ON DUPLICATE KEY UPDATE `count`=`count` + 1,
+                                `latest_search_time` = NOW();
+    </update>
 </mapper>

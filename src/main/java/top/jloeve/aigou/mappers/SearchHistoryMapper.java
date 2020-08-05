@@ -12,4 +12,5 @@ public interface SearchHistoryMapper {
       @Param("bySearchCount") boolean bySearchCount,
       @Param("byRecent") boolean byRecent,
       @Param("limit") Integer limit);
+  boolean updateSearchHistoryCount(String keyword);
 }

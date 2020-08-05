@@ -23,4 +23,6 @@ public interface ISearchHistoryService extends IService {
   List<SearchHistory> getRecentSearchHistories(Integer limit);
 
   List<SearchHistory> getRecentPopularSearchHistories(Integer limit);
+
+  boolean updateSearchHistoryCount(String keyword);
 }

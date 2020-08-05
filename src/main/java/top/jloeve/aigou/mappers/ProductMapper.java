@@ -8,16 +8,11 @@ import top.jloeve.aigou.domains.impl.Product;
 import java.util.List;
 
 @Repository
-public interface ProductMapper {
+public interface ProductMapper extends ISearchMapper<List<Product>> {
   List<Product> queryNewProducts(@Param("limit") Integer limit);
 
   List<Product> queryByProductTypeName(
       @Param("productTypeName") String productTypeName, @Param("limit") Integer limit);
 
   List<Product> queryBySales(@Param("limit") Integer limit);
-
-  List<Product> queryByParams(
-      @Param("productTypeUUID") String productTypeUUID,
-      @Param("brandUUIDs") Iterable<String> brandUUIDs,
-      @Param("keyword") String keyword);
 }

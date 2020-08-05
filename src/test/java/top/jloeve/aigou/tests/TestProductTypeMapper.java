@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
+import top.jloeve.aigou.domains.impl.Product;
 import top.jloeve.aigou.domains.impl.ProductType;
 import top.jloeve.aigou.mappers.ProductTypeMapper;
 
@@ -27,10 +28,10 @@ public class TestProductTypeMapper extends TestCase {
   }
 
   @Test
-  public void testQuery() {
+  public void testQueryAll() {
     List<ProductType> productTypes;
 
-    productTypes = productTypeMapper.query();
+    productTypes = productTypeMapper.queryAll();
     assertTrue(productTypes.size() > 0);
 
     ProductType productType = productTypes.get(0);
@@ -38,8 +39,12 @@ public class TestProductTypeMapper extends TestCase {
   }
 
   @Test
-  public void testQueryById() {
-    ProductType productType = productTypeMapper.queryById("09c6fb44-4219-4760-89a9-d179682e423e");
+  public void testQueryByParams() {
+    String[] brandUUIDs = {
+      "b8eaceed-7b72-44e8-bfab-cb46601399a8", "00760bcd-da11-4596-9338-d6fe39181e9c"
+    };
+    ProductType productType =
+        productTypeMapper.queryByParams("0eba44a1-41d5-4156-b0f0-c16475c084ac", brandUUIDs, "子");
     assertProductType(productType);
   }
 }

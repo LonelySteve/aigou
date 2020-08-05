@@ -6,6 +6,4 @@ import top.jloeve.aigou.domains.impl.Brand;
 import java.util.List;
 
 @Repository
-public interface BrandMapper {
-  List<Brand> queryByTypeId(String typeUUID);
-}
+public interface BrandMapper extends ISearchMapper<List<Brand>> {}

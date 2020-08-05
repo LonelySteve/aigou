@@ -34,6 +34,11 @@ public class SearchHistoryServiceImpl implements ISearchHistoryService {
   }
 
   @Override
+  public boolean updateSearchHistoryCount(String keyword) {
+    return searchHistoryMapper.updateSearchHistoryCount(keyword);
+  }
+
+  @Override
   public List<SearchHistory> getRecentPopularSearchHistories() {
     return getRecentPopularSearchHistories(10);
   }

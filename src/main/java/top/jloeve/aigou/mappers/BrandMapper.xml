@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="top.jloeve.aigou.mappers.BrandMapper">
-    <select id="queryByTypeId" resultMap="top.jloeve.aigou.mappers.ProductMapper.BrandResult">
-        SELECT BIN_TO_UUID(uuid)      AS product_brand_uuid,
-               `name`                 AS product_brand_name,
-               BIN_TO_UUID(type_uuid) AS product_type_uuid,
-               image_file_name        AS product_brand_image_file_name
-        FROM s_brand
-        <if test="typeUUID != null">
-            WHERE type_uuid = UUID_TO_BIN(#{typeUUID})
-        </if>
+    <select id="queryByParams" resultMap="top.jloeve.aigou.mappers.ProductMapper.BrandResult">
+        <include refid="top.jloeve.aigou.mappers.ProductMapper.queryByParamsSql"/>
     </select>
 </mapper>
