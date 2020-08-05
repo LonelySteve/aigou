@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="commons/normal::head"></div>
+    <title>爱购网 | 商品详情</title>
+    <link rel="stylesheet" th:href="@{~/css/goodsDetail.css}"/>
+    <link rel="stylesheet" th:href="@{~/css/footer.css}"/>
+    <link rel="stylesheet" th:href="@{~/css/font-awesome-4.7.0/Font-Awesome-master/css/font-awesome.min.css}"/>
+    <script th:src="@{~/plugs/jquery.js}"></script>
+    <script>
+        $(function () {
+            //增加商品数量
+            $(".add").click(function () {
+                $("#goodsNum").val(parseInt($("#goodsNum").val()) + 1);
+                $(".reduce").css({"backgroundPositionX": "0", "backgroundPositionY": "25px"});
+            });
+            //减少商品数量
+            $(".reduce").click(function () {
+                console.log($("#goodsNum").val());
+                if ($("#goodsNum").val() > 1) {
+                    $("#goodsNum").val(parseInt($("#goodsNum").val()) - 1);
+                    $(this).css({"backgroundPositionX": "0", "backgroundPositionY": "25px"});
+                }
+                if ($("#goodsNum").val() == 1) {
+                    $(this).css({"backgroundPositionX": "-24px", "backgroundPositionY": "25px"});
+                }
+
+            });
+            var timer;
+            //点击添加购物车
+            $("#addCart").click(function () {
+                var num = $('#goodsNum').val();
+                var product_id = $('#product_id').val();
+                $.post('${ctx}/front/shop_cart/addProductToCart', {
+                    'product_id': product_id,
+                    'product_num': num
+                }, function (e) {
+                    if (e.result) {
+                        clearTimeout(timer);
+                        $("#tips").css("display", "inline-block");
+                        timer = setTimeout(function () {
+                            $("#tips").css("display", "none");
+                        }, 3000);
+                    } else {
+                        alert(e.message);
+                    }
+                })
+
+
+            });
+
+            //搜索按钮
+            $('.search-btn').on('click', function () {
+                var words = $('.search-txt').val();
+                window.location.href = "${ctx}/front/productType/index?type=&words=" + words;
+            })
+
+            //热搜词
+            $('.hotSearch').on('click', function () {
+                $('.search-txt').val($(this).text());
+                $('.search-btn').click();
+            })
+        });
+    </script>
+</head>
+<body>
+<!--头部-->
+<div th:replace="commons/normal::header"></div>
+<!--导航栏-->
+<div th:replace="commons/normal::nav"></div>
+<!--商品详情-->
+<div class="w1230 clear-float goods-main">
+    <!--/*@thymesVar id="product" type="top.jloeve.aigou.domains.impl.Product"*/-->
+    <div class="big-img">
+        <img th:src="@{~/upload/eshop/{img-name}(img-name=${product.imageFileName})}" width="230px" height="230px"/>
+    </div>
+    <div class="goods-detail">
+        <input type="hidden" id="product_id" th:value="${product.uuid}">
+        <h3 class="goods-title" th:text="${product.name}">${product.name}</h3>
+        <p class="price">价格<span th:text="|￥${product.price}|">￥${product.price}</span></p>
+        <!--        <p class="store-num">销量：<span th:text="|${product.sales}件|">${product.sales}件</span></p>-->
+        <div class="update-num">
+            <div>
+                <input type="text" value="1" id="goodsNum"/>
+                <span class="add"></span>
+                <span class="reduce"></span>
+            </div>
+            <a href="javascript:void(0);" id="addCart" title="添加购物车"><i class="fa fa-shopping-cart"></i>添加购物车</a><span
+                id="tips"><i class="fa fa-check-circle-o"></i>添加成功</span>
+        </div>
+    </div>
+    <!--店家承诺-->
+    <div class="promise">
+        <h3><i class="fa fa-handshake-o"></i>爱购承诺</h3>
+        <p>爱购平台卖家销售并发货的商品，由平台卖家提供发票和相应的售后服务。请您放心购买！
+            注：因厂家会在没有任何提前通知的情况下更改产品包装、产地或者一些附件，本司不能确保客户收到的货物与商城图片、产地、附件说明完全一致。只能确保为原厂正货！并且保证与当时市场上同样主流新品一致。若没有及时更新，请大家谅解！</p>
+    </div>
+</div>
+<!--商品介绍-->
+<div class="w1230 clear-float">
+    <!--商品推荐-->
+    <div class="recommend goods-show">
+        <h3>看了本商品的用户最终还看了</h3>
+        <ul class="clear-float">
+            <!--/*@thymesVar id="list" type="java.util.List<top.jloeve.aigou.domains.impl.Product>"*/-->
+            <li th:each="p: ${list}">
+                <a href="#">
+                    <div class="g-img"><a th:href="@{~/product-detail/{uuid}(uuid=${p.uuid})}"><img
+                            th:src="@{~/upload/eshop/{img-name}(img-name=${p.imageFileName})}" alt="" width="230px"
+                            height="230px"/></a>
+                    </div>
+                    <p class="g-title" th:text="${p.name}">${p.productName}</p>
+                    <span class="g-price" th:text="|￥${p.price}|">￥${p.price}</span>
+                    <!--                    <span class="g-num">销量:${p.sales }</span>-->
+                </a>
+            </li>
+        </ul>
+    </div>
+    <!--商品介绍-->
+    <div class="goods-des">
+        <h3 class="goods-tro">商品介绍</h3>
+        <div class="goods-info">
+            <ul>
+                <!--/*@thymesVar id="product" type="top.jloeve.aigou.domains.impl.Product"*/-->
+                <div th:each="imgName : ${#strings.arraySplit(product.desc, ',')}" th:remove="tag">
+                    <li>
+                        <!--/*@thymesVar id="imgName" type="java.util.String"*/-->
+                        <img th:src="@{~/upload/img/{img-name}(img-name=${imgName})}" alt="" width="60%" height="60%"/>
+                    </li>
+                    <br/>
+                </div>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!--脚注-->
+<div th:replace="commons/normal::footer"></div>
+</body>
+</html>

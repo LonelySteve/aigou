@@ -32,6 +32,12 @@ public class TestProductMapper extends TestCase {
   }
 
   @Test
+  public void testQueryByUUID() {
+    Product product = productMapper.queryByUUID("35a7aac4-3008-421a-a247-f17fa5943f3b");
+    assertProduct(product);
+  }
+
+  @Test
   public void testQueryNewProducts() {
     List<Product> products;
 

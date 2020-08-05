@@ -43,6 +43,11 @@ public class ProductServiceImpl implements IProductService {
   }
 
   @Override
+  public Product getByUUID(String uuid) {
+    return productMapper.queryByUUID(uuid);
+  }
+
+  @Override
   public List<Product> getByParams(String productTypeUUID, String[] brands, String keyword) {
     return productMapper.queryByParams(productTypeUUID, brands, keyword);
   }

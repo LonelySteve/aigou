@@ -15,4 +15,6 @@ public interface ProductMapper extends ISearchMapper<List<Product>> {
       @Param("productTypeName") String productTypeName, @Param("limit") Integer limit);
 
   List<Product> queryBySales(@Param("limit") Integer limit);
+
+  Product queryByUUID(@Param("uuid") String uuid);
 }

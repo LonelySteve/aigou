@@ -26,4 +26,6 @@ public interface IProductService extends ISearchService<List<Product>> {
   }
 
   List<Product> getByProductTypeName(String name, Integer limit);
+
+  Product getByUUID(String uuid);
 }
