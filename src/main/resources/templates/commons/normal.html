@@ -34,6 +34,26 @@
             display: block;
         }
     </style>
+    <script>
+        $(document).ready(() => {
+            // 搜索按钮
+            $('.search-btn').on('click', function () {
+                const keyword = $('.search-txt').val();
+                window.location.href = "/product/detail?keyword=" + keyword;
+            })
+            // 热搜词
+            $('.hotSearch').on('click', function () {
+                $('.search-txt').val($(this).text());
+                $('.search-btn').click();
+            })
+            // 搜索框回车事件
+            $('.search-txt').on('keyup', function (event) {
+                if (event.keyCode === 13) {
+                    $('.search-btn').click();
+                }
+            })
+        });
+    </script>
 </div>
 <!--头部-->
 <div th:fragment="header" class="top" id="top">

@@ -43,21 +43,7 @@
                         alert(e.message);
                     }
                 })
-
-
             });
-
-            //搜索按钮
-            $('.search-btn').on('click', function () {
-                var words = $('.search-txt').val();
-                window.location.href = "${ctx}/front/productType/index?type=&words=" + words;
-            })
-
-            //热搜词
-            $('.hotSearch').on('click', function () {
-                $('.search-txt').val($(this).text());
-                $('.search-btn').click();
-            })
         });
     </script>
 </head>

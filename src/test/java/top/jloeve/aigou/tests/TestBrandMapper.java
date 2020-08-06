@@ -29,11 +29,8 @@ public class TestBrandMapper extends TestCase {
 
   @Test
   public void testQueryByParams() {
-    String[] brandUUIDs = {
-      "b8eaceed-7b72-44e8-bfab-cb46601399a8", "00760bcd-da11-4596-9338-d6fe39181e9c"
-    };
     List<Brand> brands =
-        brandMapper.queryByParams("0eba44a1-41d5-4156-b0f0-c16475c084ac", brandUUIDs, "子");
+        brandMapper.queryByParams("29feb3d0-ad4d-4b86-aabc-aa80e435e29b", null, null);
     assertEquals(1, brands.size());
     Brand brand = brands.get(0);
     assertBrand(brand);

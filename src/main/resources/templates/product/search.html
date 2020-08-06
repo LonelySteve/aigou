@@ -89,19 +89,18 @@
     }
 
     $(function () {
-        var _brand = '${brands}';
-        var _brands = _brand.split(",");
-        for (var _b in _brands) {
+        const _brand = new URL(window.location.href).searchParams.get("brands");
+        const _brands = _brand.split(",");
+        for (const _b in _brands) {
             $('.chk[value="' + _brands[_b] + '"]').prop("checked", true);
         }
 
-
         //品牌确定按钮
         $('.brands-sure').on('click', function () {
-            var ids = "";
+            let ids = "";
             $('.chk:checked').each(function (i, d) {
                 ids = ids + $(this).val();
-                if (i != $('.chk:checked').length - 1) {
+                if (i !== $('.chk:checked').length - 1) {
                     ids = ids + ",";
                 }
             })
@@ -111,25 +110,6 @@
         //品牌重置按钮
         $('.brands-cancel').on('click', function () {
             $('.chk').prop("checked", false);
-        })
-
-        //搜索按钮
-        $('.search-btn').on('click', function () {
-            var words = $('.search-txt').val();
-            window.location.href = "?product-type-uuid=" + $('#ptype').val() + "&keyword=" + words;
-        })
-
-        //热搜词
-        $('.hotSearch').on('click', function () {
-            $('.search-txt').val($(this).text());
-            $('.search-btn').click();
-        })
-
-        //搜索框回车事件
-        $('.search-txt').on('keyup', function (event) {
-            if (event.keyCode == 13) {
-                $('.search-btn').click();
-            }
         })
     })
 </script>
