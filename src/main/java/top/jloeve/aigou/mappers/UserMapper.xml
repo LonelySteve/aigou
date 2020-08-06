@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="top.jloeve.aigou.mappers.UserMapper">
+    <resultMap id="UserResult" type="User">
+        <result property="uuid" column="user_uuid"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="typeId" column="user_type_id"/>
+    </resultMap>
+    <select id="exist" resultType="boolean">
+        SELECT EXISTS(SELECT * FROM s_user WHERE username = #{username})
+    </select>
+    <select id="login" resultMap="UserResult">
+        SELECT uuid    AS user_uuid,
+               username,
+               type_id AS user_type_id
+        FROM s_user
+        WHERE username = #{username}
+          AND password = UUID_TO_BIN(#{password})
+        limit 1
+    </select>
+    <insert id="signUp">
+        INSERT INTO s_user
+        VALUES (UUID_TO_BIN(UUID()), #{username}, UUID_TO_BIN(#{password}), #{typeId});
+    </insert>
+</mapper>

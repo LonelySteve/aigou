@@ -19,5 +19,22 @@
         <a href="javascript:void(0);" class="top-link3"></a>
     </div>
 </div>
+
+<script th:fragment="captcha">
+    function flushCaptcha() {
+        //改变img标签的src属性，末尾加一个随机数，
+        //浏览器发现请求没有变化，不会向服务器发送请求，所有如果src属性一直不变，无法实现更换图片
+        $('.code-img').attr("src", "/captcha?_=" + Math.random());
+    }
+
+    $(document).ready(
+        () => {
+            // 处理验证码点击事件，点击更换验证码图片
+            $('.code-img').on('click', function () {
+                flushCaptcha();
+            })
+        }
+    )
+</script>
 </body>
 </html>

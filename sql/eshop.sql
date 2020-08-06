@@ -133,7 +133,8 @@ CREATE TABLE `s_user`
     `username` varchar(50) NOT NULL COMMENT '用户名',
     `password` binary(16)  NOT NULL COMMENT '密码',
     `type_id`  int(1)      NOT NULL COMMENT '用户类型：0、后台用户；1、前台用户',
-    PRIMARY KEY (`uuid`)
+    PRIMARY KEY (`uuid`),
+    UNIQUE KEY (`username`) # 用户名唯一
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
 
@@ -157,7 +158,6 @@ values (UUID_TO_BIN('a11439ccd60c11eaadab58fb845fce30'), 'admin', UUID_TO_BIN('e
         1),
        (UUID_TO_BIN('d02d13aa10cc4bfe8bd86c3cbc1e01af'), 'egqewgq', UUID_TO_BIN('9b2ec22cb5f994e6af93c403e33df448'), 0),
        (UUID_TO_BIN('deb66d3a8c4b4c8a8aea2e5be622f9a3'), 'dagega', UUID_TO_BIN('45535f0617ab2b78006373a9aa3e0de1'), 0),
-       (UUID_TO_BIN('e888e30e355445a8a55f97f0320ed7a2'), 'wudi', UUID_TO_BIN('e10adc3949ba59abbe56e057f20f883e'), 1),
        (UUID_TO_BIN('fe58db3a26ba4f50a676bbff054bf90c'), 'eeqqt', UUID_TO_BIN('27ea45a9ce0d2883a27bc3973d87bfed'), 0);
 
 /*Table structure for table `s_receiving_address` */

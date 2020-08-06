@@ -12,6 +12,28 @@
     <link rel="stylesheet" th:href="@{~/css/footer.css}"/>
     <link rel="stylesheet" th:href="@{~/css/font-awesome-4.7.0/Font-Awesome-master/css/font-awesome.min.css}"/>
     <script th:src="@{~/plugs/jquery.js}"></script>
+    <style>
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .dropdown-content > p {
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+    </style>
 </div>
 <!--头部-->
 <div th:fragment="header" class="top" id="top">
@@ -20,9 +42,17 @@
         <div class="w1230 top-bar-main">
             <a th:href="@{~/}" class="toIndex"> <i class="fa fa-home"></i> <span>爱购网首页</span>
             </a>
-            <ul>
+            <ul th:if="${session.loginUser} == null">
                 <li><a th:href="@{~/user/login}" class="login">登录</a></li>
                 <li><a th:href="@{~/user/signup}" class="register">注册</a></li>
+            </ul>
+            <ul th:if="${session.loginUser} != null">
+                <li class="dropdown">
+                    <span th:text="${session.loginUser.username}"></span>
+                    <div class="dropdown-content">
+                        <p><a th:href="@{~/user/logout}">登出</a></p>
+                    </div>
+                </li>
             </ul>
         </div>
     </div>

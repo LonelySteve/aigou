@@ -41,19 +41,18 @@
 </div>
 <!--登录/注册的底部-->
 <div th:replace="commons/normal::footer"></div>
+<script th:replace="commons/login::captcha"></script>
 <script>
     $(function () {
-        //验证码点击事件，点击更换验证码图片
-        $('.code-img').on('click', function () {
-            $('.code-img').attr("src", "/captcha?_=" + Math.random());
-        })
         //注册事件
         $('form').on('submit', function () {
             const data = $(this).serialize();
             $.post('/user/signup', data, function (msg) {
                 alert(msg);
-                if (msg === '注册成功') {
+                if (msg === "注册成功") {
                     window.location.href = $('.to_login').attr("href");
+                } else if (msg === "验证码错误") {
+                    flushCaptcha();
                 }
             })
             return false;

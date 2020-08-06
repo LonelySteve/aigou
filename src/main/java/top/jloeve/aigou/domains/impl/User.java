@@ -5,7 +5,7 @@ import top.jloeve.aigou.domains.IDomain;
 
 @Data
 public class User implements IDomain {
-  private String id;
+  private String uuid;
   private String username;
   private String password;
   private Integer typeId;
