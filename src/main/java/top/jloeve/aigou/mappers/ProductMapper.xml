@@ -22,24 +22,28 @@
         <result column="product_image_file_name" property="imageFileName"/>
         <result column="product_price" property="price"/>
         <result column="product_desc" property="desc"/>
+        <result column="product_sale_count" property="saleCount"/>
         <result column="product_create_time" property="createTime"/>
         <association property="type" resultMap="ProductTypeResult"/>
         <association property="brand" resultMap="BrandResult"/>
     </resultMap>
     <sql id="productOneTableBasicQuery">
-        SELECT BIN_TO_UUID(uuid)       AS product_uuid,
-               `name`                  AS product_name,
-               `desc`                  AS product_desc,
-               create_time             AS product_create_time,
-               price                   AS product_price,
-               image_file_name         AS product_image_file_name,
-               BIN_TO_UUID(type_uuid)  AS product_type_uuid,
-               BIN_TO_UUID(brand_uuid) AS product_brand_uuid
-        FROM `s_product`
+        SELECT SUM(IFNULL(`product_count`, 0)) AS product_sale_count,
+               BIN_TO_UUID(s_product.uuid)     AS product_uuid,
+               BIN_TO_UUID(`type_uuid`)        AS product_type_uuid,
+               `name`                          AS product_name,
+               `image_file_name`               AS product_image_file_name,
+               `price`                         AS product_price,
+               `desc`                          AS product_desc,
+               `create_time`                   AS product_create_time,
+               BIN_TO_UUID(`brand_uuid`)       AS product_brand_uuid
+        FROM s_product
+                 LEFT JOIN `s_order_product` ON s_order_product.product_uuid = s_product.uuid
+        GROUP BY s_product.uuid
     </sql>
     <select id="queryByUUID" resultMap="ProductResult">
         <include refid="productOneTableBasicQuery"/>
-        WHERE `uuid` = UUID_TO_BIN(#{uuid})
+        HAVING product_uuid = #{uuid}
     </select>
     <select id="queryNewProducts" resultMap="ProductResult">
         <include refid="productOneTableBasicQuery"/>
@@ -50,74 +54,53 @@
     </select>
     <select id="queryByProductTypeName" resultMap="ProductResult">
         SELECT
-        BIN_TO_UUID(p.uuid) AS product_uuid,
-        p.name AS product_name,
-        p.`desc` AS product_desc,
-        p.create_time AS product_create_time,
-        p.price AS product_price,
-        p.image_file_name AS product_image_file_name,
-        BIN_TO_UUID(t.uuid) AS product_type_uuid,
-        t.name AS product_type_name,
-        t.`desc` AS product_type_desc,
-        t.icon_class_name AS product_type_icon_class_name,
-        BIN_TO_UUID(p.brand_uuid) AS product_brand_uuid
-        FROM `s_product` AS p LEFT JOIN `s_product_type` AS t ON p.type_uuid = t.uuid
+        SUM(IFNULL(`product_count`, 0)) AS product_sale_count,
+        BIN_TO_UUID(s_product.uuid) AS product_uuid,
+        BIN_TO_UUID(`type_uuid`) AS product_type_uuid,
+        s_product.`name` AS product_name,
+        `image_file_name` AS product_image_file_name,
+        `price` AS product_price,
+        s_product.`desc` AS product_desc,
+        `create_time` AS product_create_time,
+        BIN_TO_UUID(`brand_uuid`) AS product_brand_uuid,
+        BIN_TO_UUID(s_product_type.uuid) AS product_type_uuid,
+        s_product_type.`name` AS product_type_name,
+        s_product_type.`desc` AS product_type_desc,
+        s_product_type.icon_class_name AS product_type_icon_class_name
+        FROM s_product
+        LEFT JOIN `s_order_product` ON s_order_product.product_uuid = s_product.uuid
+        LEFT JOIN `s_product_type` ON s_product.type_uuid = s_product_type.uuid
+        GROUP BY s_product.uuid
         <if test="productTypeName != null">
-            WHERE t.name = #{productTypeName}
+            HAVING s_product_type.name = #{productTypeName}
         </if>
         <if test="limit != null">
             LIMIT #{limit}
         </if>
     </select>
     <select id="queryBySales" resultMap="ProductResult">
-        SELECT
-        s_order_product.uuid AS order_product_uuid,
-        SUM(`product_count`) AS product_count,
-        BIN_TO_UUID(`product_uuid`) AS product_uuid,
-        BIN_TO_UUID(`type_uuid`) AS product_type_uuid,
-        `name` AS product_name,
-        `image_file_name` AS product_image_file_name,
-        `price` AS product_price,
-        `desc` AS product_desc,
-        `create_time` AS product_create_time,
-        BIN_TO_UUID(`brand_uuid`) AS product_brand_uuid
-        FROM aigou.s_order_product
-        LEFT JOIN `s_product` ON s_product.uuid = s_order_product.product_uuid
-        GROUP BY `product_uuid`
-        ORDER BY `product_count` DESC
+        <include refid="productOneTableBasicQuery"/>
+        ORDER BY `product_sale_count` DESC
         <if test="limit != null">
             LIMIT #{limit}
         </if>
     </select>
-    <sql id="queryByParamsSql">
-        SELECT
-        BIN_TO_UUID(s_product.uuid) AS product_uuid,
-        s_product.`name` AS product_name,
-        `desc` AS product_desc,
-        create_time AS product_create_time,
-        price AS product_price,
-        s_product.image_file_name AS product_image_file_name,
-        BIN_TO_UUID(s_product.type_uuid) AS product_type_uuid,
-        BIN_TO_UUID(brand_uuid) AS product_brand_uuid,
-        s_brand.`name` AS product_brand_name,
-        s_brand.image_file_name AS product_brand_image_file_name
-        FROM s_product LEFT JOIN s_brand ON s_product.brand_uuid = s_brand.uuid
-        <where>
+
+    <select id="queryByParams" resultMap="ProductResult">
+        <include refid="productOneTableBasicQuery"/>
+        <trim prefix="HAVING" prefixOverrides="AND |OR ">
             <if test="productTypeUUID != null">
-                s_product.type_uuid = UUID_TO_BIN(#{productTypeUUID})
+                product_type_uuid = #{productTypeUUID}
             </if>
             <if test="brandUUIDs != null">
-                AND brand_uuid IN
+                AND product_brand_uuid IN
                 <foreach collection="brandUUIDs" open="(" close=")" separator=", " item="value">
-                    UUID_TO_BIN(#{value})
+                    #{value}
                 </foreach>
             </if>
             <if test="keyword != null">
-                AND s_product.`name` LIKE CONCAT('%', #{keyword}, '%')
+                AND product_name LIKE CONCAT('%', #{keyword}, '%')
             </if>
-        </where>
-    </sql>
-    <select id="queryByParams" resultMap="ProductResult">
-        <include refid="queryByParamsSql"/>
+        </trim>
     </select>
 </mapper>

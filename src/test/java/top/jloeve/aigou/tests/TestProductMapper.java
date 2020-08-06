@@ -20,12 +20,14 @@ public class TestProductMapper extends TestCase {
   @Autowired private ProductMapper productMapper;
 
   public void assertProduct(Product product) {
+    assertNotNull(product);
     assertNotNull(product.getUuid());
     assertNotNull(product.getDesc());
     assertNotNull(product.getImageFileName());
     assertNotNull(product.getName());
     assertNotNull(product.getType());
     assertNotNull(product.getType().getUuid());
+    assertNotNull(product.getSaleCount());
     assertNotNull(product.getBrand());
     assertNotNull(product.getBrand().getUuid());
     assertNotNull(product.getCreateTime());
@@ -93,6 +95,8 @@ public class TestProductMapper extends TestCase {
     List<Product> products =
         productMapper.queryByParams("0eba44a1-41d5-4156-b0f0-c16475c084ac", brandUUIDs, "子");
     assertEquals(1, products.size());
-    assertProduct(products.get(0));
+
+    Product product = products.get(0);
+    assertProduct(product);
   }
 }

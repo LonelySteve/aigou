@@ -21,6 +21,7 @@ public class TestProductTypeMapper extends TestCase {
   @Autowired private ProductTypeMapper productTypeMapper;
 
   public void assertProductType(ProductType productType) {
+    assertNotNull(productType);
     assertNotNull(productType.getUuid());
     assertNotNull(productType.getDesc());
     assertNotNull(productType.getIconClassName());

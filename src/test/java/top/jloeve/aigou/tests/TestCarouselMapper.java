@@ -20,7 +20,7 @@ public class TestCarouselMapper extends TestCase {
 
   @Test
   @Rollback
-  public void testDao() {
+  public void testQuery() {
     assertTrue(carouselMapper.query(null).size() != 0);
     for (int i = 0; i <= 3; i++) {
       assertEquals(i, carouselMapper.query(i).size());

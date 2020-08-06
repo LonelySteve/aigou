@@ -62,7 +62,7 @@
         <input type="hidden" id="product_id" th:value="${product.uuid}">
         <h3 class="goods-title" th:text="${product.name}">${product.name}</h3>
         <p class="price">价格<span th:text="|￥${product.price}|">￥${product.price}</span></p>
-        <!--        <p class="store-num">销量：<span th:text="|${product.sales}件|">${product.sales}件</span></p>-->
+        <p class="store-num">销量：<span th:text="|${product.saleCount}件|">${product.sales}件</span></p>
         <div class="update-num">
             <div>
                 <input type="text" value="1" id="goodsNum"/>
@@ -95,7 +95,7 @@
                     </div>
                     <p class="g-title" th:text="${p.name}">${p.productName}</p>
                     <span class="g-price" th:text="|￥${p.price}|">￥${p.price}</span>
-                    <!--                    <span class="g-num">销量:${p.sales }</span>-->
+                    <span class="g-num" th:text="|销量：${p.saleCount}|">销量:${p.saleCount }</span>
                 </a>
             </li>
         </ul>

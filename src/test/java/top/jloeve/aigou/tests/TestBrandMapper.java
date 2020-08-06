@@ -20,6 +20,7 @@ public class TestBrandMapper extends TestCase {
   @Autowired private BrandMapper brandMapper;
 
   public void assertBrand(Brand brand) {
+    assertNotNull(brand);
     assertNotNull(brand.getUuid());
     assertNotNull(brand.getImageFileName());
     assertNotNull(brand.getName());

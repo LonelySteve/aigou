@@ -11,6 +11,7 @@ public class Product implements IDomain {
   public String imageFileName;
   public Double price;
   public String desc;
+  public Integer saleCount;
   public Date createTime;
   public Brand brand;
   public ProductType type;

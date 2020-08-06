@@ -18,6 +18,7 @@ public class TestUserMapper extends TestCase {
   @Autowired private UserMapper userMapper;
 
   private void assertUser(User user) {
+    assertNotNull(user);
     assertNotNull(user.getUuid());
     assertNotNull(user.getUsername());
     assertNull(user.getPassword());

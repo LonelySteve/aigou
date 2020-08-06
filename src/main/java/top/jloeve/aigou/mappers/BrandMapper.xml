@@ -8,7 +8,7 @@
         image_file_name AS product_brand_image_file_name,
         BIN_TO_UUID(type_uuid) AS product_type_uuid
         FROM s_brand
-        <if test="#{productTypeUUID} != null">
+        <if test="productTypeUUID != null">
             WHERE type_uuid = UUID_TO_BIN(#{productTypeUUID})
         </if>
     </select>
