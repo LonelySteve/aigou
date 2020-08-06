@@ -65,7 +65,7 @@
     <ul class="clear-float">
         <li th:each="product:${products}">
             <a href="#">
-                <div class="g-img"><a th:href="@{front/product_detail/productDetail(id=${product.uuid})}">
+                <div class="g-img"><a th:href="@{~/product/detail(id=${product.uuid})}">
                     <img th:src="@{~/upload/eshop/{imgName}(imgName=${product.imageFileName})}" alt=""
                          width="230px" height="230px"/></a>
                 </div>

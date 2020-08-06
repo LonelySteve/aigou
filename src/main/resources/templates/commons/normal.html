@@ -11,6 +11,7 @@
     <link rel="stylesheet" th:href="@{~/css/top.css}"/>
     <link rel="stylesheet" th:href="@{~/css/footer.css}"/>
     <link rel="stylesheet" th:href="@{~/css/font-awesome-4.7.0/Font-Awesome-master/css/font-awesome.min.css}"/>
+    <script th:src="@{~/plugs/jquery.js}"></script>
 </div>
 <!--头部-->
 <div th:fragment="header" class="top" id="top">
@@ -20,8 +21,8 @@
             <a th:href="@{~/}" class="toIndex"> <i class="fa fa-home"></i> <span>爱购网首页</span>
             </a>
             <ul>
-                <li><a th:href="@{~/login}" class="login">登录</a></li>
-                <li><a th:href="@{~/register}" class="register">注册</a></li>
+                <li><a th:href="@{~/user/login}" class="login">登录</a></li>
+                <li><a th:href="@{~/user/signup}" class="register">注册</a></li>
             </ul>
         </div>
     </div>
@@ -61,7 +62,8 @@
                     <li th:each="productType:${allProductTypes}">
                         <h3>
                             <i th:class="|iconfont ${productType.iconClassName}|"></i>
-                            <a th:href="@{~/search(product-type-uuid=${productType.uuid})}" th:text="${productType.name}">
+                            <a th:href="@{~/product/search(product-type-uuid=${productType.uuid})}"
+                               th:text="${productType.name}">
                             </a>
                         </h3>
                     </li>

@@ -17,7 +17,8 @@
             <!--/*@thymesVar id="allProductTypes" type="java.util.List<top.jloeve.aigou.domains.impl.ProductType>"*/-->
             <li th:each="productType:${allProductTypes}">
                 <h3>
-                    <a th:href="@{/search(product-type-uuid=${productType.uuid})}" th:text="${productType.name}">
+                    <a th:href="@{~/product/search(product-type-uuid=${productType.uuid})}"
+                       th:text="${productType.name}">
                         <i th:class="'iconfont '+ ${productType.iconClassName}"></i>
                     </a>
                 </h3>
@@ -49,7 +50,7 @@
             <ul>
                 <!--/*@thymesVar id="newProducts" type="java.util.List<top.jloeve.aigou.domains.impl.Product>"*/-->
                 <li th:each="newProduct:${newProducts}">
-                    <a th:href="@{~/product-detail/{product-uuid}(product-uuid=${newProduct.uuid})}">
+                    <a th:href="@{~/product/detail/{product-uuid}(product-uuid=${newProduct.uuid})}">
                         <img th:src="@{~/upload/eshop/{img-name}(img-name=${newProduct.imageFileName})}" alt=""
                              width="90px" height="90px"/>
                         <p th:text="${newProduct.name}"></p>
@@ -66,7 +67,7 @@
                 <!--/*@thymesVar id="rankings" type="java.util.List<top.jloeve.aigou.domains.impl.Product>"*/-->
                 <li th:each="ranking, rankingStat:${rankings}">
                     <!--/*@thymesVar id="newProduct" type="top.jloeve.aigou.domains.impl.Product"*/-->
-                    <a th:href="@{~/product-detail/{product-uuid}(product-uuid=${ranking.uuid})}">
+                    <a th:href="@{~/product/detail/{product-uuid}(product-uuid=${ranking.uuid})}">
                         <span class="rank-icon${step.count}" th:text="${rankingStat.count}"></span>
                         <img th:src="@{~/upload/eshop/{img-name}(img-name=${ranking.imageFileName})}" alt=""
                              width="90px" height="90px"/>
@@ -97,7 +98,7 @@
     <div class="global-list">
         <ul class="clear-float">
             <li th:each="p1:${list1}">
-                <a th:href="@{~/product-detail/{uuid}(uuid=${p1.uuid})}">
+                <a th:href="@{~/product/detail/{uuid}(uuid=${p1.uuid})}">
                     <p th:text="${p1.name}"></p>
                     <img th:src="@{|/upload/eshop/${p1.imageFileName}|}" alt="" width="150px" height="150px"/></a>
             </li>
@@ -110,7 +111,7 @@
     <div class="cloth-list">
         <ul class="clear-float">
             <li th:each="p2:${list2}">
-                <a th:href="@{~/product-detail/{uuid}(uuid=${p2.uuid})}">
+                <a th:href="@{~/product/detail/{uuid}(uuid=${p2.uuid})}">
                     <div class="c-img"><img th:src="@{|/upload/eshop/${p2.imageFileName}|}" alt="" width="180px"
                                             height="180px"/></div>
                     <p class="c-title" th:text="${p2.name}"></p>
@@ -125,7 +126,7 @@
     <div class="mod-list">
         <ul class="clear-float">
             <li th:each="p3:${list3}">
-                <a th:href="@{~/product-detail/{uuid}(uuid=${p3.uuid})}">
+                <a th:href="@{~/product/detail/{uuid}(uuid=${p3.uuid})}">
                     <img th:src="@{|/upload/eshop/${p3.imageFileName}|}" alt="" width="100px" height="100px"/>
                     <div class="mod-info">
                         <p class="m-title" th:text="${p3.name}"></p>
@@ -141,7 +142,7 @@
     <div class="book-list">
         <ul class="clear-float">
             <li th:each="p4:${list4}">
-                <a th:href="@{~/product-detail/{uuid}(uuid=${p4.uuid})}">
+                <a th:href="@{~/product/detail/{uuid}(uuid=${p4.uuid})}">
                     <img th:src="@{|/upload/eshop/${p4.imageFileName}|}" alt="" width="180px" height="180px"/>
                     <p class="c-title" th:text="${p4.name}"></p>
                     <span class="c-price" th:text="'￥'+${p4.price}"></span>
@@ -151,12 +152,11 @@
 </div>
 <!--脚注-->
 <div th:replace="commons/normal::footer"></div>
-<script src="/plugs/jquery.js"></script>
 <script type="text/javascript">
     $(function () {
         $('.search-btn').on('click', function () {
             var words = $('.search-txt').val();
-            window.location.href = "/search?&keyword=" + words;
+            window.location.href = "product/search?&keyword=" + words;
         })
 
         $('.hotSearch').on('click', function () {

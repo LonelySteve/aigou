@@ -103,7 +103,7 @@
             <!--/*@thymesVar id="list" type="java.util.List<top.jloeve.aigou.domains.impl.Product>"*/-->
             <li th:each="p: ${list}">
                 <a href="#">
-                    <div class="g-img"><a th:href="@{~/product-detail/{uuid}(uuid=${p.uuid})}"><img
+                    <div class="g-img"><a th:href="@{~/product/detail/{uuid}(uuid=${p.uuid})}"><img
                             th:src="@{~/upload/eshop/{img-name}(img-name=${p.imageFileName})}" alt="" width="230px"
                             height="230px"/></a>
                     </div>

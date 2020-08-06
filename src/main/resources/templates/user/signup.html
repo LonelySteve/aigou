@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="commons/login::head"></div>
+    <title>爱购注册页面</title>
+    <style>
+        .reg-div input {
+            width: 305px;
+            padding-left: 10px;
+        }
+
+        .pro {
+            margin-top: 10px;
+        }
+
+        .pro a {
+            color: #B41E23;
+        }
+    </style>
+</head>
+<body>
+<!--登录/注册的头部-->
+<div th:replace="commons/login::header"></div>
+<!--登录/注册的中部-->
+<div class="lr-main">
+    <div class="w1230">
+        <div class="reg-div">
+            <h3 class="login-title">注册爱购</h3>
+            <p class="go-reg">若有账号？<a class="to_login" th:href="@{~/user/login}">在此登录</a></p>
+            <form action="#" method="post">
+                <p><input type="text" name="username" placeholder="请输入注册的账号"/></p>
+                <p><input type="password" name="password" placeholder="请输入密码"/></p>
+                <p><input type="password" name="confirmPassword" placeholder="请确认密码"/></p>
+                <p class="clear-float"><input type="text" name="code" placeholder="验证码" class="code"/>
+                    <img th:src="@{~/captcha}" width="110px" height="42px" class="code-img"/></p>
+                <input type="submit" value="同意并注册协议" class="sum-btn"/>
+                <p class="pro"><a href="javascript:void(0);">《爱购用户协议》</a></p>
+            </form>
+        </div>
+    </div>
+</div>
+<!--登录/注册的底部-->
+<div th:replace="commons/normal::footer"></div>
+<script>
+    $(function () {
+        //验证码点击事件，点击更换验证码图片
+        $('.code-img').on('click', function () {
+            $('.code-img').attr("src", "/captcha?_=" + Math.random());
+        })
+        //注册事件
+        $('form').on('submit', function () {
+            const data = $(this).serialize();
+            $.post('/user/signup', data, function (msg) {
+                alert(msg);
+                if (msg === '注册成功') {
+                    window.location.href = $('.to_login').attr("href");
+                }
+            })
+            return false;
+        })
+    });
+</script>
+</body>
+</html>
