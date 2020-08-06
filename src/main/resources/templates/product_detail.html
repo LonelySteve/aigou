@@ -2,10 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <div th:replace="commons/normal::head"></div>
-    <title>爱购网 | 商品详情</title>
+    <title th:text="'爱购网 | 商品详情 - ' + ${product.name}"></title>
     <link rel="stylesheet" th:href="@{~/css/goodsDetail.css}"/>
-    <link rel="stylesheet" th:href="@{~/css/footer.css}"/>
-    <link rel="stylesheet" th:href="@{~/css/font-awesome-4.7.0/Font-Awesome-master/css/font-awesome.min.css}"/>
     <script th:src="@{~/plugs/jquery.js}"></script>
     <script>
         $(function () {
