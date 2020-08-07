@@ -1,3 +1,9 @@
+DROP DATABASE IF EXISTS `aigou`;
+
+CREATE DATABASE `aigou`;
+
+USE `aigou`;
+
 /*
 SQLyog Ultimate v12.09 (64 bit)
 MySQL - 5.5.40 : Database - eshop

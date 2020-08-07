@@ -43,9 +43,17 @@
 <div th:replace="commons/normal::footer"></div>
 <script th:replace="commons/login::captcha"></script>
 <script>
-    $(function () {
+    $(document).ready(() => {
+        const $passwordInput = $("input[name='password']");
+        const $passwordConfirmInput = $("input[name='confirmPassword']");
         //注册事件
         $('form').on('submit', function () {
+            // 检查两次输入的密码是否一致
+            if ($passwordInput.val() !== $passwordConfirmInput.val()) {
+                alert("两次输入的密码不一致");
+                return false;
+            }
+            // 检测
             const data = $(this).serialize();
             $.post('/user/signup', data, function (msg) {
                 alert(msg);
@@ -57,7 +65,7 @@
             })
             return false;
         })
-    });
+    })
 </script>
 </body>
 </html>

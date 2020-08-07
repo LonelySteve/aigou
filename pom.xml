@@ -75,6 +75,16 @@
                 </includes>
                 <filtering>true</filtering>
             </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*.html</include>
+                    <include>**/*.xml</include>
+                    <include>**/*.yaml</include>
+                    <include>**/*.yml</include>
+                </includes>
+                <filtering>true</filtering>
+            </resource>
         </resources>
     </build>
 </project>

@@ -24,7 +24,7 @@
 
 出于节省空间的考虑，本存储库并不存储静态资源，原本放在 `src/main/resources/static` 路径下的静态资源文件需要额外下载。
 
-使用 Nginx 提供静态资源访问服务，具体配置可以见 [nginx.conf](./nginx.conf)
+使用 Nginx 提供静态资源访问服务，具体配置可以见 [nginx.conf](data/nginx.conf)
 
 #### 下载静态资源文件
 

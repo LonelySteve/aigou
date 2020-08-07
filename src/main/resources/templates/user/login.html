@@ -1,49 +1,84 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
+  <head>
     <div th:replace="commons/login::head"></div>
     <title>爱购登录页面</title>
-</head>
-<body>
-<!--登录/注册的头部-->
-<div th:replace="commons/login::header"></div>
-<!--登录/注册的中部-->
-<div class="lr-main">
-    <div class="w1230">
+  </head>
+  <body>
+    <!--登录/注册的头部-->
+    <div th:replace="commons/login::header"></div>
+    <!--登录/注册的中部-->
+    <div class="lr-main">
+      <div class="w1230">
         <div class="reg-div">
-            <h3 class="login-title">登录爱购</h3>
-            <p class="go-reg">还没有爱购账号？<a th:href="@{~/user/signup}">在此注册</a></p>
-            <form action="#" method="post">
-                <p><span class="icon-account"></span><input type="text" name="username" placeholder="请输入已注册的账号"/></p>
-                <p><span class="icon-pwd"></span><input type="password" name="password" placeholder="请输入密码"/></p>
-                <p class="clear-float"><input type="text" name="code" placeholder="验证码" class="code"/>
-                    <img th:src="@{~/captcha}" width="110px" height="42px" class="code-img"/></p>
-                <p><input type="checkbox" name="keep" value="1" class="chk-login"/><span>7天免登录</span></p>
-                <input type="submit" value="登录" class="sum-btn"/>
-            </form>
+          <h3 class="login-title">登录爱购</h3>
+          <p class="go-reg">
+            还没有爱购账号？<a th:href="@{~/user/signup}">在此注册</a>
+          </p>
+          <form action="#" method="post">
+            <p>
+              <span class="icon-account"></span
+              ><input
+                type="text"
+                name="username"
+                placeholder="请输入已注册的账号"
+              />
+            </p>
+            <p>
+              <span class="icon-pwd"></span
+              ><input
+                type="password"
+                name="password"
+                placeholder="请输入密码"
+              />
+            </p>
+            <p class="clear-float">
+              <input
+                type="text"
+                name="code"
+                placeholder="验证码"
+                class="code"
+              />
+              <img
+                th:src="@{~/captcha}"
+                width="110px"
+                height="42px"
+                class="code-img"
+              />
+            </p>
+            <p>
+              <input
+                type="checkbox"
+                name="keep"
+                value="1"
+                class="chk-login"
+              /><span>7天免登录</span>
+            </p>
+            <input type="submit" value="登录" class="sum-btn" />
+          </form>
         </div>
+      </div>
     </div>
-</div>
-<!--登录/注册的底部-->
-<div th:replace="commons/normal::footer"></div>
-<script th:replace="commons/login::captcha"></script>
-<script>
-    $(function () {
+    <!--登录/注册的底部-->
+    <div th:replace="commons/normal::footer"></div>
+    <script th:replace="commons/login::captcha"></script>
+    <script>
+      $(function () {
         //登录事件
-        $('form').on('submit', function () {
-            const data = $(this).serialize();//获取整个表单的所有参数
-            $.post('/user/login', data, function (msg) {
-                alert(msg);
-                if (msg === "登录成功") {
-                    //页面跳转，前台首页
-                    window.location.href = "/";
-                } else if (msg === "验证码错误") {
-                    flushCaptcha();
-                }
-            })
-            return false;
-        })
-    })
-</script>
-</body>
+        $("form").on("submit", function () {
+          const data = $(this).serialize(); //获取整个表单的所有参数
+          $.post("/user/login", data, function (msg) {
+            alert(msg);
+            if (msg === "登录成功") {
+              //页面跳转，前台首页
+              window.location.href = "/";
+            } else if (msg === "验证码错误") {
+              flushCaptcha();
+            }
+          });
+          return false;
+        });
+      });
+    </script>
+  </body>
 </html>

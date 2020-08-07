@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import top.jloeve.aigou.services.IUserService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @Controller
 @RequestMapping("/user")
@@ -27,13 +28,14 @@ public class UserController extends BaseController {
   @ResponseBody
   public String login(
       HttpServletRequest request,
+      HttpServletResponse response,
       @RequestParam("username") String username,
       @RequestParam("password") String password,
       @RequestParam("code") String code,
       @RequestParam(value = "keep", required = false) boolean keep) {
     if (verifyCaptchaFail(request, code)) return "验证码错误";
     try {
-      userService.login(request.getSession(), username, password, keep);
+      userService.login(request, response, username, password, keep);
     } catch (Exception e) {
       return e.getMessage();
     }
@@ -41,8 +43,8 @@ public class UserController extends BaseController {
   }
 
   @GetMapping("/logout")
-  public String logout(HttpServletRequest request) {
-    userService.logout(request.getSession());
+  public String logout(HttpServletRequest request, HttpServletResponse response) {
+    userService.logout(request, response);
     return "redirect:/";
   }
 

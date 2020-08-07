@@ -1,20 +1,28 @@
 package top.jloeve.aigou.services.impl;
 
 import lombok.extern.java.Log;
+
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Optional;
 import java.util.logging.Level;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.util.DateUtils;
 import top.jloeve.aigou.domains.impl.User;
 import top.jloeve.aigou.mappers.UserMapper;
 import top.jloeve.aigou.services.IUserService;
 import top.jloeve.aigou.utils.StringUtils;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.xml.bind.DatatypeConverter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.stream.Stream;
 
 @Service
 @Log
@@ -29,19 +37,32 @@ public class UserServiceImpl implements IUserService {
 
   @Override
   public void login(
-      HttpSession session, String username, String password, boolean keepOneWeekExpires)
+      HttpServletRequest request,
+      HttpServletResponse response,
+      String username,
+      String password,
+      boolean keepOneWeekExpires)
       throws Exception {
+    HttpSession session = request.getSession();
     String passwordDigest = null;
     // 如果传参进来的 username 为 null，则尝试从 Session 中恢复登录凭证
     if (username == null && password == null) {
-      Date expires = (Date) session.getAttribute("expires");
-      // 判断当前日期时间是否已经超过有效截止日期，如果已经超过则需要用户重新登录
-      if (expires == null || !(new Date()).before(expires)) {
+      List<Cookie> cookies = Arrays.asList(request.getCookies());
+      if (cookies.stream().noneMatch(cookie -> cookie.getName().equals("username"))) {
         throw new Exception("登录状态已失效，请重新登录");
       }
-      username = (String) session.getAttribute("username");
-      passwordDigest = (String) session.getAttribute("password");
-      // 从会话中恢复登录信息，无法刷新有效期，强制使 keepOneWeekExpires 参数为 False
+      Optional<Cookie> usernameCookie =
+          cookies.stream().filter(c -> c.getName().equals("username")).findFirst();
+      Optional<Cookie> passwordCookie =
+          cookies.stream().filter(c -> c.getName().equals("password")).findFirst();
+
+      if (usernameCookie.isPresent()) {
+        username = usernameCookie.get().getValue();
+      }
+      if (passwordCookie.isPresent()) {
+        password = passwordCookie.get().getValue();
+      }
+      // 从 Cookie 中恢复登录信息，无法刷新有效期，强制使 keepOneWeekExpires 参数为 False
       keepOneWeekExpires = false;
     }
     if (StringUtils.isEmptyOrNull(username)) {
@@ -60,10 +81,17 @@ public class UserServiceImpl implements IUserService {
       throw new Exception("用户不存在或密码错误");
     }
     if (keepOneWeekExpires) {
-      session.setAttribute("username", username);
-      session.setAttribute("password", passwordDigest);
-      // 保持一周的有效期
-      session.setAttribute("expires", LocalDateTime.from((new Date()).toInstant()).plusWeeks(1));
+      Cookie[] cookies =
+          new Cookie[] {new Cookie("username", username), new Cookie("password", password)};
+
+      Arrays.stream(cookies)
+          .forEach(
+              c -> {
+                // 保持一周的有效期
+                c.setMaxAge(7 * 24 * 60 * 60);
+                c.setPath("/");
+                response.addCookie(c);
+              });
     }
     session.setAttribute("loginUser", user);
   }
@@ -81,15 +109,24 @@ public class UserServiceImpl implements IUserService {
   }
 
   @Override
-  public void login(HttpSession session) throws Exception {
-    login(session, null, null, false);
+  public void login(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    login(request, response, null, null, false);
   }
 
   @Override
-  public void logout(HttpSession session) {
-    session.removeAttribute("expires");
-    session.removeAttribute("username");
-    session.removeAttribute("password");
+  public void logout(HttpServletRequest request, HttpServletResponse response) {
+    HttpSession session = request.getSession();
+
+    Cookie[] cookies = new Cookie[] {new Cookie("username", null), new Cookie("password", null)};
+
+    Arrays.stream(cookies)
+        .forEach(
+            c -> {
+              c.setMaxAge(0);
+              c.setPath("/");
+              response.addCookie(c);
+            });
+
     session.removeAttribute("loginUser");
   }
 

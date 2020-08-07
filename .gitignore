@@ -35,6 +35,9 @@ build/
 ### static files ###
 **/static/
 
+### database ###
+data/db/
+
 ### temp files, logs ###
 **/t[e]mp/**
 **/log[s]/**
