@@ -62,7 +62,7 @@
 
 ### 补充
 
-- 搜索页接口（`/product/search`）可以接受三个查询参数：`product-type-uuid`，`brands` 和 `keyword`，分别代表了产品类型 UUID，品牌 UUID 和关键字查询参数，其中品牌名 UUID 可以包含多个要匹配的品牌 UUID，其中每一个 UUID 使用 ','（没有空格的英文半角逗号）分隔。三个参数可以任意组合，可以全部都使用，也可以全部都不使用，在这种情况下，搜索结果将是所有的产品。
+- 搜索页接口（`/product/search`）可以接受三个查询参数：`product-type-uuid`，`brands` 和 `keyword`，分别代表了产品类型 UUID，品牌 UUID 和关键字查询参数，其中品牌名 UUID 可以包含多个要匹配的品牌 UUID，其中每一个 UUID 使用 ','（没有空格的英文半角逗号）进行分隔。三个参数可以任意组合，可以全部都使用，也可以全部都不使用，在这种情况下，搜索结果将是所有的产品。
 
 ## 工具链
 
@@ -103,7 +103,7 @@
 
 在命令行中键入 `cd` 命令切换至源码根目录下。
 
-> 可以使用 `ls`（在 Windows cmd 中为 `cmd`）命令列出当前目录下的文件或文件夹以检查是否切换无误
+> 可以使用 `ls`（在 Windows cmd 中为 `dir`）命令列出当前目录下的文件或文件夹以检查是否切换无误
 
 在命令行中键入以下命令开始打包操作：
 
@@ -111,7 +111,7 @@
 mvn clean package -DskipTests
 ```
 
-第一次构建可能需要花费较多的时间，打包成功后可以在输出日志中看见 `BUILD SUCCESS` 字样，此时就可以在当前工作目录下的 target 文件夹下找到类似 `aigou-x.x.x-SNAPSHOT.jar` 名称的 jar 包文件。
+第一次构建可能需要花费较多的时间，如果打包成功后就可以在输出日志中看见 `BUILD SUCCESS` 字样，此时就可以在当前工作目录下的 target 文件夹下找到类似 `aigou-x.x.x-SNAPSHOT.jar` 名称的 jar 包文件。
 
 ### 静态资源
 
@@ -255,7 +255,7 @@ data/static
 
 ### 配置运行环境
 
-由于本项目使用 nginx 提供静态资源访问服务，使用 mysql 作为数据库，因此你还需要安装配置好 nginx 和 mysql 环境，这里推荐使用 mysql8，mysql5 的版本需要修改下面环境变量中 DB_DRIVER_CLASS_NAME 中的值。
+由于本项目使用 nginx 提供静态资源访问服务，使用 mysql 作为数据库，因此还需要安装配置好 nginx 和 mysql 环境，这里推荐使用 mysql8，mysql5 的版本需要修改下面环境变量中 DB_DRIVER_CLASS_NAME 中的值。
 
 > [mysql 下载安装](https://dev.mysql.com/downloads/mysql/) | [nginx 下载安装](http://nginx.org/en/download.html)
 
