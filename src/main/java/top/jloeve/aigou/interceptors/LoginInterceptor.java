@@ -27,8 +27,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         response.sendRedirect("/");
         return false;
       }
-    } catch (Exception exception) {
-      System.out.println(Arrays.toString(exception.getStackTrace()));
+    } catch (Exception ignored) {
     }
 
     return true;
