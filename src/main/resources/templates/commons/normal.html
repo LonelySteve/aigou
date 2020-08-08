@@ -1,141 +1,150 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-  <body>
-    <div th:fragment="head" th:remove="tag">
-      <meta charset="utf-8" />
-      <link rel="icon" type="image/x-icon" th:href="@{~/img/title-icon.jpg}" />
-      <link
-        rel="stylesheet"
-        type="text/css"
-        th:href="@{~/iconfont/iconfont.css}"
-      />
-      <link rel="stylesheet" th:href="@{~/css/reset.css}" />
-      <link rel="stylesheet" th:href="@{~/css/top.css}" />
-      <link rel="stylesheet" th:href="@{~/css/footer.css}" />
-      <link
-        rel="stylesheet"
-        th:href="@{~/css/font-awesome-4.7.0/Font-Awesome-master/css/font-awesome.min.css}"
-      />
-      <script th:src="@{~/plugs/jquery.js}"></script>
-      <style>
+<body>
+<div th:fragment="head" th:remove="tag">
+    <meta charset="utf-8"/>
+    <link rel="icon" type="image/x-icon" th:href="@{~/img/title-icon.jpg}"/>
+    <link
+            rel="stylesheet"
+            type="text/css"
+            th:href="@{~/iconfont/iconfont.css}"
+    />
+    <link rel="stylesheet" th:href="@{~/css/reset.css}"/>
+    <link rel="stylesheet" th:href="@{~/css/top.css}"/>
+    <link rel="stylesheet" th:href="@{~/css/footer.css}"/>
+    <link
+            rel="stylesheet"
+            th:href="@{~/css/font-awesome-4.7.0/Font-Awesome-master/css/font-awesome.min.css}"
+    />
+    <script th:src="@{~/plugs/jquery.js}"></script>
+    <style>
         .dropdown {
-          position: relative;
-          display: inline-block;
+            position: relative;
+            display: inline-block;
         }
 
         .dropdown-content {
-          display: none;
-          position: absolute;
-          background-color: white;
-          box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
+            display: none;
+            position: absolute;
+            background-color: white;
+            box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
         }
 
         .dropdown-content > p {
-          min-width: 30px;
-          text-align: center;
+            min-width: 30px;
+            text-align: center;
         }
 
         .dropdown:hover .dropdown-content {
-          display: block;
+            display: block;
         }
-      </style>
-      <script>
+    </style>
+    <script>
         $(document).ready(() => {
-          // 搜索按钮
-          $(".search-btn").on("click", function () {
-            const keyword = $(".search-txt").val();
-            window.location.href = "/product/search?keyword=" + keyword;
-          });
-          // 热搜词
-          $(".hotSearch").on("click", function () {
-            $(".search-txt").val($(this).text());
-            $(".search-btn").click();
-          });
-          // 搜索框回车事件
-          $(".search-txt").on("keyup", function (event) {
-            if (event.keyCode === 13) {
-              $(".search-btn").click();
-            }
-          });
+            // 搜索按钮
+            $(".search-btn").on("click", function () {
+                const keyword = $(".search-txt").val();
+                window.location.href = "/product/search?keyword=" + keyword;
+            });
+            // 热搜词
+            $(".hotSearch").on("click", function () {
+                $(".search-txt").val($(this).text());
+                $(".search-btn").click();
+            });
+            // 搜索框回车事件
+            $(".search-txt").on("keyup", function (event) {
+                if (event.keyCode === 13) {
+                    $(".search-btn").click();
+                }
+            });
+            // 登出超链接
+            $("#logout-a").click(
+                () => {
+                    $.post("/user/logout", {}, (data) => {
+                        alert(data);
+                        window.location.assign("/");
+                    })
+                }
+            );
         });
-      </script>
-    </div>
-    <!--头部-->
-    <div th:fragment="header" class="top" id="top">
-      <!--头部bar-->
-      <div class="top-bar">
+    </script>
+</div>
+<!--头部-->
+<div th:fragment="header" class="top" id="top">
+    <!--头部bar-->
+    <div class="top-bar">
         <div class="w1230 top-bar-main">
-          <a th:href="@{~/}" class="toIndex">
-            <i class="fa fa-home"></i> <span>爱购网首页</span>
-          </a>
-          <ul th:if="${session.loginUser} == null">
-            <li><a th:href="@{~/user/login}" class="login">登录</a></li>
-            <li><a th:href="@{~/user/signup}" class="register">注册</a></li>
-          </ul>
-          <ul th:if="${session.loginUser} != null">
-            <li class="dropdown">
-              <span th:text="${session.loginUser.username}"></span>
-              <div class="dropdown-content">
-                <p><a th:href="@{~/user/logout}">登出</a></p>
-              </div>
-            </li>
-          </ul>
+            <a th:href="@{~/}" class="toIndex">
+                <i class="fa fa-home"></i> <span>爱购网首页</span>
+            </a>
+            <ul th:if="${session.loginUser} == null">
+                <li><a th:href="@{~/user/login}" class="login">登录</a></li>
+                <li><a th:href="@{~/user/signup}" class="register">注册</a></li>
+            </ul>
+            <ul th:if="${session.loginUser} != null">
+                <li class="dropdown">
+                    <span th:text="${session.loginUser.username}"></span>
+                    <div class="dropdown-content">
+                        <p><a id="logout-a" href="#">登出</a></p>
+                    </div>
+                </li>
+            </ul>
         </div>
-      </div>
-      <!--logo+搜索-->
-      <div class="top-header w1230 clear-float">
+    </div>
+    <!--logo+搜索-->
+    <div class="top-header w1230 clear-float">
         <a th:href="@{~/}" class="logo">
-          <img th:src="@{~/img/logo.png}" width="" alt="logo" />
+            <img th:src="@{~/img/logo.png}" width="" alt="logo"/>
         </a>
         <div class="top-header-right">
-          <!--搜索框-->
-          <div class="search clear-float">
-            <input type="text" placeholder="牛奶" class="search-txt" />
-            <a href="#" class="search-btn">搜索</a>
-          </div>
-          <!--热搜-->
-          <p class="hotkey">
-            <!--/*@thymesVar id="searchHistories" type="java.util.List<top.jloeve.aigou.domains.impl.SearchHistory>"*/-->
-            <!--/*@thymesVar id="searchHistory" type="top.jloeve.aigou.domains.impl.SearchHistory"*/-->
-            <a
-              th:each="searchHistory : ${searchHistories}"
-              th:href="@{~/product/search(keyword=${searchHistory.keyword})}"
-              href="javascript:void(0);"
-              class="hotSearch"
-              th:text="${searchHistory.keyword}"
-            >
-              ${searchHistory.keyword}
-            </a>
-          </p>
+            <!--搜索框-->
+            <div class="search clear-float">
+                <input type="text" placeholder="牛奶" class="search-txt"/>
+                <a href="#" class="search-btn">搜索</a>
+            </div>
+            <!--热搜-->
+            <p class="hotkey">
+                <!--/*@thymesVar id="searchHistories" type="java.util.List<top.jloeve.aigou.domains.impl.SearchHistory>"*/-->
+                <!--/*@thymesVar id="searchHistory" type="top.jloeve.aigou.domains.impl.SearchHistory"*/-->
+                <a
+                        th:each="searchHistory : ${searchHistories}"
+                        th:href="@{~/product/search(keyword=${searchHistory.keyword})}"
+                        href="javascript:void(0);"
+                        class="hotSearch"
+                        th:text="${searchHistory.keyword}"
+                >
+                    ${searchHistory.keyword}
+                </a>
+            </p>
         </div>
-      </div>
     </div>
-    <!--导航栏-->
-    <div th:fragment="nav" th:class="nav">
-      <div th:class="w1230">
+</div>
+<!--导航栏-->
+<div th:fragment="nav" th:class="nav">
+    <div th:class="w1230">
         <div id="all-goods">
-          <span th:class="all-goods">所有商品分类</span>
-          <div th:class="nav-er" id="nav-er">
-            <ul>
-              <!--/*@thymesVar id="allProductTypes" type="java.util.List<top.jloeve.aigou.domains.impl.ProductType>"*/-->
-              <li th:each="productType:${allProductTypes}">
-                <h3>
-                  <i th:class="|iconfont ${productType.iconClassName}|"></i>
-                  <a
-                    th:href="@{~/product/search(product-type-uuid=${productType.uuid})}"
-                    th:text="${productType.name}"
-                  >
-                  </a>
-                </h3>
-              </li>
-            </ul>
-          </div>
+            <span th:class="all-goods">所有商品分类</span>
+            <div th:class="nav-er" id="nav-er">
+                <ul>
+                    <!--/*@thymesVar id="allProductTypes" type="java.util.List<top.jloeve.aigou.domains.impl.ProductType>"*/-->
+                    <li th:each="productType:${allProductTypes}">
+                        <h3>
+                            <i th:class="|iconfont ${productType.iconClassName}|"></i>
+                            <a
+                                    th:href="@{~/product/search(product-type-uuid=${productType.uuid})}"
+                                    th:text="${productType.name}"
+                            >
+                            </a>
+                        </h3>
+                    </li>
+                </ul>
+            </div>
         </div>
-      </div>
     </div>
-    <!--脚注-->
-    <div th:fragment="footer" class="footer">
-      <p class="w1230">
+</div>
+<!--脚注-->
+<div th:fragment="footer" class="footer">
+    <p class="w1230">
         <a href="#">关于爱购</a>
         <a href="#">合作伙伴</a>
         <a href="#">营销中心</a>
@@ -147,7 +156,7 @@
         <a href="#">网站地图</a>
         <a href="#">知识产权</a><span>|</span>
         <span>&copy;2018-2020 igo.com 版权所有</span>
-      </p>
-    </div>
-  </body>
+    </p>
+</div>
+</body>
 </html>

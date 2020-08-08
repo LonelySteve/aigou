@@ -42,10 +42,11 @@ public class UserController extends BaseController {
     return "登录成功";
   }
 
-  @GetMapping("/logout")
+  @PostMapping("/logout")
+  @ResponseBody
   public String logout(HttpServletRequest request, HttpServletResponse response) {
     userService.logout(request, response);
-    return "redirect:/";
+    return "登出成功";
   }
 
   @GetMapping("/signup")
