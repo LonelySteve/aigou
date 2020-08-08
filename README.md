@@ -126,7 +126,7 @@ mvn clean package -DskipTests
 > 链接：<https://pan.baidu.com/s/1lwU89XD8YY79pEUYECRhKQ>  
 > 提取码：2333
 
-将下载好的压缩包解压至 `data` 文件夹下
+将下载好的压缩包解压至 `data` 文件夹下。
 
 #### 静态资源文件夹文件结构
 
