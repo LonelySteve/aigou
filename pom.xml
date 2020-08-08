@@ -10,7 +10,7 @@
     </parent>
     <groupId>top.jloeve</groupId>
     <artifactId>aigou</artifactId>
-    <version>0.1.0-SNAPSHOT</version>
+    <version>0.1.1-SNAPSHOT</version>
     <name>aigou</name>
     <description>Java Web 实战项目-爱购网电商网站</description>
 
