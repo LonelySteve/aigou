@@ -9,6 +9,8 @@ services:
     volumes:
       - ./data/static:/usr/share/nginx/html
       - ./data/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./data/mime.types:/etc/nginx/mime.types:ro
+      - ./data/logs/:/logs
     networks:
       - aigou-network
   db-mysql:
