@@ -8,11 +8,7 @@ services:
       - "59999:80"
     volumes:
       - ./data/static:/usr/share/nginx/html
-<<<<<<< HEAD
-      - ./data/nginx-docker.conf:/etc/nginx/nginx-docker.conf:ro
-=======
       - ./data/nginx-docker.conf:/etc/nginx/nginx.conf:ro
->>>>>>> 9b13c0cc05b3f502c4c2abe4bb0aed78e68a9e3d
       - ./data/mime.types:/etc/nginx/mime.types:ro
       - ./data/logs/:/logs
     networks:
