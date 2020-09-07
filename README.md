@@ -1,7 +1,6 @@
 # aigou | 爱购网
 
 > JavaWeb 实训项目 - 爱购网  
-> [点我前往演示地址](http://server.jloeve.top:59999/)
 
 ![前台首页演示](./images/index-front.jpg)
 
